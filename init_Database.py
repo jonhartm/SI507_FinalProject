@@ -19,17 +19,17 @@ def ResetDatabase(tables=None):
     conn.commit()
 
 # drops the specified table from the database
-def DropTable(tableName):
-    statment = 'DROP TABLE IF EXISTS "{}"'.format(tableName)
+def DropTable(table_name):
+    statment = 'DROP TABLE IF EXISTS "{}"'.format(table_name)
     cur.execute(statment)
 
-def ResetTable(tableName):
+def ResetTable(table_name):
     # bail out if this is not a table I know
-    if tableName not in DB_Tables:
-        print("unrecognized table: " + tableName)
+    if table_name not in DB_Tables:
+        print("unrecognized table: " + table_name)
         return
 
-    if tableName == "Films":
+    if table_name == "Films":
         DropTable("Films")
         statement = '''
         CREATE TABLE "Films" (
