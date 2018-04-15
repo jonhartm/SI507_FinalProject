@@ -3,7 +3,7 @@ from settings import *
 
 from load_CSV import Load_CSV
 
-DB_Tables = ['Films', 'Credits']
+DB_Tables = ['Films', 'Credits', 'Ratings']
 
 # reset the database.
 # if tables is None, resets all of the tables
@@ -77,3 +77,16 @@ def ResetTable(table_name):
         '''
         cur.execute(statement)
         Load_CSV(CREDITS_CSV)
+    elif table_name == "Ratings":
+        DropTable("Ratings")
+        statement = '''
+            CREATE TABLE "Ratings" (
+                'UserID' INTEGER,
+                'MovieID' INTEGER,
+                'Rating' INTEGER,
+                'Timestamp' INTEGER,
+                CONSTRAINT PK_UM PRIMARY KEY (UserID, MovieID)
+            );
+        '''
+        cur.execute(statement)
+        Load_CSV(RATINGS_CSV)

@@ -8,13 +8,15 @@ import sys
 from util import CleanJSONString
 
 def Load_CSV(file_to_load):
-    global cur
+    global cur, conn
     conn = sqlite3.connect(DATABASE_NAME)
     cur = conn.cursor()
     if file_to_load == MOVIEMETADATA_CSV:
         Load_MovieData()
     elif file_to_load == CREDITS_CSV:
         Load_Credits()
+    elif file_to_load == RATINGS_CSV:
+        Load_Ratings()
     conn.commit()
 
 def Load_MovieData():
@@ -89,3 +91,18 @@ def AddPersonToDB(filmID, Name, Role):
     # add this person for this movie (assuming these are unique)
     statement = "INSERT INTO CastByFilm VALUES (?,?,?)"
     cur.execute(statement, (filmID, person_id, role_id))
+
+def Load_Ratings():
+    print("Loading Ratings data from CSV...")
+    chunksize = 100000
+    i = 0
+    for f in pd.read_csv(RATINGS_CSV, chunksize=chunksize, iterator=True):
+        inserts = []
+        for row in f.itertuples():
+            inserts.append(row[1:])
+        statement = 'INSERT INTO Ratings VALUES (?,?,?,?)'
+        cur.executemany(statement,inserts)
+        conn.commit()
+        i += 1
+        sys.stdout.write("loading chunk #{}...\n".format(str(i)))
+        sys.stdout.flush()
