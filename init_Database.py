@@ -1,5 +1,6 @@
 import sqlite3 as sqlite
 from settings import *
+import time
 
 from load_CSV import Load_CSV
 
@@ -9,6 +10,7 @@ DB_Tables = ['Films', 'Credits', 'Ratings']
 # if tables is None, resets all of the tables
 # if tables is specified, only resets those tables
 def ResetDatabase(tables=None):
+    start = time.time()
     global cur
     conn = sqlite.connect(DATABASE_NAME)
     cur = conn.cursor()
@@ -19,6 +21,8 @@ def ResetDatabase(tables=None):
         ResetTable(t)
 
     conn.commit()
+    end = time.time()
+    print("Database Reset in {}ms".format(end-start))
 
 # drops the specified table from the database
 def DropTable(table_name):
