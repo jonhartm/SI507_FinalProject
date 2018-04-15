@@ -18,7 +18,6 @@ def Load_CSV(file_to_load):
     conn.commit()
 
 def Load_MovieData():
-
     print("Loading Movie data from CSV...")
     for f in pd.read_csv(MOVIEMETADATA_CSV, iterator=True):
         inserts = []
@@ -41,6 +40,7 @@ def Load_MovieData():
     cur.execute(statement)
 
 def Load_Credits():
+    print("Loading Film Credits from CSV...")
     with open(CREDITS_CSV) as credits_csv:
         data = csv.reader(credits_csv)
         # next(data, None) #skip the headers
