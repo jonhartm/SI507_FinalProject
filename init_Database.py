@@ -1,7 +1,9 @@
 import sqlite3 as sqlite
 from settings import *
 
-DB_Tables = ['Films']
+from load_CSV import Load_CSV
+
+DB_Tables = ['Films', 'Credits']
 
 # reset the database.
 # if tables is None, resets all of the tables
@@ -47,3 +49,31 @@ def ResetTable(table_name):
         );
         '''
         cur.execute(statement)
+        Load_CSV(MOVIEMETADATA_CSV)
+    elif table_name == "Credits":
+        DropTable("CastByFilm")
+        statement = '''
+            CREATE TABLE "CastByFilm" (
+                'FilmID' INTEGER,
+                'CastID' INTEGER,
+                'RoleID' INTEGER
+            )
+        '''
+        cur.execute(statement)
+        DropTable("People")
+        statement = '''
+            CREATE TABLE "People" (
+                'ID' INTEGER NOT NULL PRIMARY KEY,
+                'Name' TEXT
+            );
+        '''
+        cur.execute(statement)
+        DropTable("Role")
+        statement = '''
+            CREATE TABLE "Role" (
+                'ID' INTEGER NOT NULL PRIMARY KEY,
+                'Title' TEXT
+            );
+        '''
+        cur.execute(statement)
+        Load_CSV(CREDITS_CSV)
