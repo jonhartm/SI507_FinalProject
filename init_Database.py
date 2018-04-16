@@ -3,6 +3,7 @@ from settings import *
 import time
 
 from load_CSV import Load_CSV
+from load_scraping import AAForBestPicture
 
 DB_Tables = ['Films', 'Credits', 'Ratings']
 
@@ -54,6 +55,7 @@ def ResetTable(table_name):
         '''
         cur.execute(statement)
         Load_CSV(MOVIEMETADATA_CSV)
+        AAForBestPicture()
     elif table_name == "Credits":
         DropTable("CastByFilm")
         statement = '''
