@@ -7,10 +7,10 @@ def CleanJSONString(s):
     i['name'] = GetString(s, "name")
     if "'job': " in s: i['job'] = GetString(s, "job")
 
-    try:
-        print(i)
-    except Exception as e:
-        pass
+    # try:
+    #     print(i)
+    # except Exception as e:
+    #     pass
 
     return i
 

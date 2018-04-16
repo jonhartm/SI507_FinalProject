@@ -43,13 +43,14 @@ def Load_MovieData():
 
 def Load_Credits():
     print("Loading Film Credits from CSV...")
-    with open(CREDITS_CSV, encoding="utf8") as credits_csv:
-        data = csv.reader(credits_csv)
-        # next(data, None) #skip the headers
-        for row in data:
-            movieId = row[2]
+    chunksize = 100
+    i = 0
+    for f in pd.read_csv(CREDITS_CSV, chunksize=chunksize, iterator=True):
+        inserts = []
+        for row in f.itertuples():
+            movieId = row[3]
             pattern = r'{.*?}' # pull strings out that are inside brackts
-            for cast in re.findall(pattern, row[0]):
+            for cast in re.findall(pattern, row[1]):
                 try:
                     cast_json = CleanJSONString(cast)
                     AddPersonToDB(movieId, cast_json['name'], "Cast")
@@ -59,7 +60,7 @@ def Load_Credits():
                         f.write(cast + "\n\n")
                     pass
 
-            for crew in re.findall(pattern, row[1]):
+            for crew in re.findall(pattern, row[2]):
                 try:
                     crew_json = CleanJSONString(crew)
                     AddPersonToDB(movieId, crew_json['name'], crew_json['job'])
@@ -68,6 +69,11 @@ def Load_Credits():
                         f.write("ERR: " + str(e) + "\n")
                         f.write(crew + "\n\n")
                     pass
+        i += 1
+        sys.stdout.write("loading chunk #{}...\n".format(str(i)))
+        sys.stdout.flush()
+        if i == 10:
+            break
 
 def AddPersonToDB(filmID, Name, Role):
     # check and see if this person has already been added
