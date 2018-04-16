@@ -4,6 +4,7 @@ import time
 
 from load_CSV import Load_CSV
 from load_scraping import AAForBestPicture
+from load_OMDBAPI import InitializeOMDBImport
 
 DB_Tables = ['Films', 'Credits', 'Ratings']
 
@@ -56,6 +57,7 @@ def ResetTable(table_name):
         cur.execute(statement)
         Load_CSV(MOVIEMETADATA_CSV)
         AAForBestPicture()
+        InitializeOMDBImport()
     elif table_name == "Credits":
         DropTable("CastByFilm")
         statement = '''

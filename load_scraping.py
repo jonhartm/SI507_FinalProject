@@ -45,4 +45,4 @@ def UpdateDatabase(winners, nominees):
     conn.commit()
     conn.close()
 
-AAForBestPicture()
+# AAForBestPicture()
