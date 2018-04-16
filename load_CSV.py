@@ -43,7 +43,7 @@ def Load_MovieData():
 
 def Load_Credits():
     print("Loading Film Credits from CSV...")
-    with open(CREDITS_CSV) as credits_csv:
+    with open(CREDITS_CSV, encoding="utf8") as credits_csv:
         data = csv.reader(credits_csv)
         # next(data, None) #skip the headers
         for row in data:
@@ -51,20 +51,22 @@ def Load_Credits():
             pattern = r'{.*?}' # pull strings out that are inside brackts
             for cast in re.findall(pattern, row[0]):
                 try:
-                    cast_json = json.loads(CleanJSONString(cast))
+                    cast_json = CleanJSONString(cast)
                     AddPersonToDB(movieId, cast_json['name'], "Cast")
                 except Exception as e:
-                    print(cast)
-                    print("ERR: " + str(e))
+                    with open("errors.txt", 'a', encoding="utf8") as f:
+                        f.write("ERR: " + str(e) + "\n")
+                        f.write(cast + "\n\n")
                     pass
 
             for crew in re.findall(pattern, row[1]):
                 try:
-                    crew_json = json.loads(CleanJSONString(crew))
+                    crew_json = CleanJSONString(crew)
                     AddPersonToDB(movieId, crew_json['name'], crew_json['job'])
                 except Exception as e:
-                    print(crew)
-                    print("ERR: " + str(e))
+                    with open("errors.txt", 'a', encoding="utf8") as f:
+                        f.write("ERR: " + str(e) + "\n")
+                        f.write(crew + "\n\n")
                     pass
 
 def AddPersonToDB(filmID, Name, Role):
