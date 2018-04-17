@@ -43,7 +43,7 @@ def Load_MovieData():
 
 def Load_Credits():
     print("Loading Film Credits from CSV...")
-    chunksize = 100
+    chunksize = 30
     i = 0
     for f in pd.read_csv(CREDITS_CSV, chunksize=chunksize, iterator=True):
         inserts = []
@@ -70,10 +70,10 @@ def Load_Credits():
                         f.write(crew + "\n\n")
                     pass
         i += 1
-        sys.stdout.write("loading chunk #{}...\n".format(str(i)))
+        sys.stdout.write("loading chunk #{} of 25...\n".format(str(i)))
         sys.stdout.flush()
-        if i == 10:
-            break
+        # if i == 10:
+        #     break
 
 def AddPersonToDB(filmID, Name, Role):
     # check and see if this person has already been added

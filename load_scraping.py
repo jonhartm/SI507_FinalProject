@@ -25,24 +25,20 @@ def AAForBestPicture():
             if row and row.text not in winners:
                 nominees.append(row.text)
 
-    # print(winners)
-    # print(nominees)
-    UpdateDatabase(winners, nominees)
-
-def UpdateDatabase(winners, nominees):
     print("Adding Academy Award Winners/Nominees...")
     conn = sqlite3.connect(Database_Name)
     cur = conn.cursor()
 
+    # AA winners are a 1
     for title in winners:
         statement = 'UPDATE Films SET AcademyAward = 1 WHERE Title == "' + title + '"';
         cur.execute(statement)
 
+    # AA nominees are a 0
     for title in nominees:
         statement = 'UPDATE Films SET AcademyAward = 0 WHERE Title == "' + title + '"';
         cur.execute(statement)
 
+    # films without an AA win/nomination are left as null
     conn.commit()
     conn.close()
-
-# AAForBestPicture()

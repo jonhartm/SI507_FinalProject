@@ -57,6 +57,7 @@ def ResetTable(table_name):
         cur.execute(statement)
         Load_CSV(MOVIEMETADATA_CSV)
         AAForBestPicture()
+        ResetTable("Ratings")
         InitializeOMDBImport()
     elif table_name == "Credits":
         DropTable("CastByFilm")
