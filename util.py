@@ -1,4 +1,5 @@
 import json
+import time
 
 def CleanJSONString(s):
     i = {}
@@ -27,3 +28,14 @@ def tryParseInt(s):
         return (int(s))
     except Exception:
         return None
+
+class Timer():
+    def Start(self):
+        self.start = time.time()
+
+    def Stop(self):
+        self.end = time.time()
+        self.elapsed = self.end-self.start
+
+    def __str__(self):
+        return str(self.elapsed)+"ms"

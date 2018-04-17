@@ -1,5 +1,6 @@
 import sqlite3 as sqlite
 from settings import *
+from util import Timer
 import time
 
 from load_CSV import Load_CSV
@@ -8,7 +9,8 @@ from load_OMDBAPI import InitializeOMDBImport
 
 # reset the database
 def ResetDatabase():
-    start = time.time()
+    t = Timer()
+    t.Start()
     global cur
     conn = sqlite.connect(DATABASE_NAME)
     cur = conn.cursor()
@@ -17,8 +19,8 @@ def ResetDatabase():
     ResetTable("Credits")
 
     conn.commit()
-    end = time.time()
-    print("Database Reset in {}ms".format(end-start))
+    t.Stop()
+    print("Database Reset in " + str(t))
 
 # drops the specified table from the database
 def DropTable(table_name):

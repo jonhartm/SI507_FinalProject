@@ -27,6 +27,8 @@ class FilmAcademyAward():
             return "{} ({}): {} Wins - {} Nominations".format(self.title, self.year, self.Awards, self.Nominations)
 
 def AAwardWinningFilms():
+    t = Timer()
+    t.Start()
     url = 'https://en.wikipedia.org/wiki/List_of_Academy_Award-winning_films'
     AA_Cache = CacheFile('WikipediaCache.json', print_info=True)
     AA_Soup = AA_Cache.CheckCache_Soup(url, strainer=SoupStrainer(class_="wikitable"))
@@ -60,3 +62,5 @@ def AAwardWinningFilms():
 
     conn.commit()
     conn.close()
+    t.Stop()
+    print("Scraping Completed in " + str(t))

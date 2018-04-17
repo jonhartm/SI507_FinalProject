@@ -1,5 +1,6 @@
 from caching import *
 from secrets import *
+from util import Timer
 import sqlite3
 
 Database_Name = "movies.db"
@@ -13,6 +14,8 @@ def Import_OMD(title, year=None):
     return OMD_Cache.CheckCache_API(url, params)
 
 def InitializeOMDBImport():
+    t = Timer()
+    t.Start()
     print("Loading data from OMDB API...")
     conn = sqlite3.connect(Database_Name)
     cur = conn.cursor()
@@ -58,5 +61,8 @@ def InitializeOMDBImport():
 
     conn.commit()
     conn.close()
+
+    t.Stop()
+    print("OMDB Import completed in " + str(t))
 
 # InitializeOMDBImport()
