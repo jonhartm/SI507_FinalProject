@@ -18,7 +18,6 @@ def InitializeOMDBImport():
     cur = conn.cursor()
     cur2 = conn.cursor()
 
-    statement = 'SELECT Title, Release FROM Films WHERE AcademyAward NOT null'
     # get ratings for the top 500 rated movies
     statement = '''
     SELECT Title, Release FROM Films WHERE FilmID IN
@@ -36,7 +35,7 @@ def InitializeOMDBImport():
         try:
             # print("Checking OMDB API for {} ({})".format(row[0],row[1][:4]))
             OMD_data = Import_OMD(row[0], row[1][:4])
-            statement = 'UPDATE Films SET Rating_IMDB = ?, Rating_RT=?, Rating_MC=? WHERE Title == ? AND Release == ?';
+            statement = 'UPDATE Film SET Rating_IMDB = ?, Rating_RT=?, Rating_MC=? WHERE Title == ? AND Release == ?';
             values = [None, None, None, row[0], row[1]]
             for ratings in OMD_data['Ratings']:
                 if ratings['Source'] == "Internet Movie Database": values[0] = ratings['Value'].split('/')[0]

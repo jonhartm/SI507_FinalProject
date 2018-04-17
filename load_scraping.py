@@ -1,44 +1,62 @@
 from caching import *
+from util import tryParseInt
 from bs4 import BeautifulSoup
 from bs4 import SoupStrainer
 import sqlite3
 
 Database_Name = 'movies.db'
 
-def AAForBestPicture():
-    url = 'https://en.wikipedia.org/wiki/Academy_Award_for_Best_Picture'
+class FilmAcademyAward():
+    def __init__(self):
+        self.title = None
+        self.year = None
+        self.BestPicture = False
+        self.Awards = 0
+        self.Nominations = 0
+
+    def InsertTuple(self):
+        t = [None, self.Awards, self.Nominations, self.title, self.year+'%']
+        if (self.BestPicture):
+            t[0] = True
+        return tuple(t)
+
+    def __str__(self):
+        if self.BestPicture:
+            return "{} ({}): Best Picture, {} Wins - {} Nominations".format(self.title, self.year, self.Awards, self.Nominations)
+        else:
+            return "{} ({}): {} Wins - {} Nominations".format(self.title, self.year, self.Awards, self.Nominations)
+
+def AAwardWinningFilms():
+    url = 'https://en.wikipedia.org/wiki/List_of_Academy_Award-winning_films'
     AA_Cache = CacheFile('WikipediaCache.json', print_info=True)
-    BestPictures = AA_Cache.CheckCache_Soup(url, strainer=SoupStrainer(class_="wikitable"))
+    AA_Soup = AA_Cache.CheckCache_Soup(url, strainer=SoupStrainer(class_="wikitable"))
+    Films = []
+    for row in AA_Soup.find_all("tr"):
+        if "Nominations" in row.text:
+            pass
+        else:
+            cols = row.find_all("td")
+            f = FilmAcademyAward()
+            f.title = cols[0].text
+            f.year = cols[1].text.split('/')[0]
+            try:
+                f.BestPicture = ("#EEDD82" in row.attrs['style'])
+            except:
+                pass
+            f.Awards = tryParseInt(cols[2].text)
+            f.Nominations = tryParseInt(cols[3].text)
+            Films.append(f)
 
-    winners = []
-    nominees = []
-
-    for decade in BestPictures.find_all(class_="wikitable"):
-        # input(decade)
-        for table_row in decade.find_all("tr", style={"background:#FAEB86"}):
-            row = table_row.find("i")
-            if row:
-                winners.append(row.text)
-        # input(decade)
-        for table_row in decade.find_all("tr"):
-            row = table_row.find("i")
-            if row and row.text not in winners:
-                nominees.append(row.text)
-
-    print("Adding Academy Award Winners/Nominees...")
     conn = sqlite3.connect(Database_Name)
     cur = conn.cursor()
+    inserts = []
+    for film in Films:
+        inserts.append(film.InsertTuple())
 
-    # AA winners are a 1
-    for title in winners:
-        statement = 'UPDATE Films SET AcademyAward = 1 WHERE Title == "' + title + '"';
-        cur.execute(statement)
+    statement = '''
+        UPDATE Film SET BestPicture=?,AA_Wins=?,AA_Nominations=? WHERE Title == ? AND Release LIKE ?
+    '''
+    cur.executemany(statement,inserts)
 
-    # AA nominees are a 0
-    for title in nominees:
-        statement = 'UPDATE Films SET AcademyAward = 0 WHERE Title == "' + title + '"';
-        cur.execute(statement)
-
-    # films without an AA win/nomination are left as null
     conn.commit()
     conn.close()

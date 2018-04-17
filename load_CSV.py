@@ -32,14 +32,14 @@ def Load_MovieData():
                 row[16],
                 row[17],
             ])
-        statement = 'INSERT INTO Films VALUES (NULL,?,?,?,?,?,?,NULL,NULL,NULL,NULL)'
+        statement = 'INSERT INTO Film VALUES (?,?,?,?,?,?,NULL,NULL,NULL,NULL,NULL,NULL)'
     cur.executemany(statement,inserts)
 
     # the CSV contains duplicate entries for 29 films - remove them here
     statement = '''
-        DELETE FROM Films WHERE ID IN (SELECT MIN(ID) FROM Films GROUP BY FilmId HAVING COUNT(*) > 1)
+        DELETE FROM Film WHERE FilmID IN (SELECT MIN(FilmID) FROM Film GROUP BY FilmID HAVING COUNT(*) > 1)
     '''
-    cur.execute(statement)
+    # cur.execute(statement)
 
 def Load_Credits():
     print("Loading Film Credits from CSV...")
