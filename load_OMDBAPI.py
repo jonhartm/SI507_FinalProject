@@ -19,20 +19,30 @@ def InitializeOMDBImport():
     cur2 = conn.cursor()
 
     statement = 'SELECT Title, Release FROM Films WHERE AcademyAward NOT null'
+    # get ratings for the top 500 rated movies
+    statement = '''
+    SELECT Title, Release FROM Films WHERE FilmID IN
+    (
+        SELECT MovieID
+        FROM Ratings
+        GROUP BY MovieID
+        ORDER BY COUNT(*) DESC
+    )
+    LIMIT 500
+    '''
     cur.execute(statement)
 
     for row in cur:
         try:
+            # print("Checking OMDB API for {} ({})".format(row[0],row[1][:4]))
             OMD_data = Import_OMD(row[0], row[1][:4])
-            statement = 'UPDATE Films SET Rating_IMDB = ?, Rating_RT=?, Rating_MC=? WHERE Title == ?';
-            values = [
-            OMD_data['Ratings'][0]['Value'].split('/')[0],
-            OMD_data['Ratings'][1]['Value'],
-            OMD_data['Ratings'][2]['Value'].split('/')[0],
-            OMD_data['Title']
-            ]
+            statement = 'UPDATE Films SET Rating_IMDB = ?, Rating_RT=?, Rating_MC=? WHERE Title == ? AND Release == ?';
+            values = [None, None, None, row[0], row[1]]
+            for ratings in OMD_data['Ratings']:
+                if ratings['Source'] == "Internet Movie Database": values[0] = ratings['Value'].split('/')[0]
+                elif ratings['Source'] == "Rotten Tomatoes": values[1] = ratings['Value']
+                if ratings['Source'] == "Metacritic": values[2] = ratings['Value'].split('/')[0]
             cur2.execute(statement, values)
-            print(values)
         except Exception as e:
             pass
             # print("unable: " + str(e))
