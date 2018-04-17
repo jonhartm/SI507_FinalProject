@@ -18,16 +18,26 @@ def InitializeOMDBImport():
     cur = conn.cursor()
     cur2 = conn.cursor()
 
-    # get ratings for the top 500 rated movies
+    # get ratings for the most popular and highly rated films
     statement = '''
-    SELECT Title, Release FROM Films WHERE FilmID IN
-    (
-        SELECT MovieID
-        FROM Ratings
-        GROUP BY MovieID
-        ORDER BY COUNT(*) DESC
-    )
-    LIMIT 500
+    SELECT Title, Release FROM Film
+        WHERE FilmID IN
+            (
+                SELECT MovieID
+        		FROM Ratings
+        		GROUP BY MovieID
+        		HAVING COUNT(*) > 10
+        		ORDER BY AVG(Rating)
+        		LIMIT 350
+            )
+        OR FilmID IN
+        	(
+        		SELECT MovieID
+        		FROM Ratings
+        		GROUP BY MovieID
+        		ORDER BY COUNT(*) DESC
+        		LIMIT 500
+        	)
     '''
     cur.execute(statement)
 
