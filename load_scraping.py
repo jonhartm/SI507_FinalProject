@@ -45,7 +45,7 @@ def AAwardWinningFilms():
                 f.BestPicture = ("#EEDD82" in row.attrs['style'])
             except:
                 pass
-            f.Awards = tryParseInt(cols[2].text)
+            f.Awards = tryParseInt(cols[2].text.split(' ')[0])
             f.Nominations = tryParseInt(cols[3].text)
             Films.append(f)
 
