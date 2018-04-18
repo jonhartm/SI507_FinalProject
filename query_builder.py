@@ -10,7 +10,10 @@
 def selectQueryBuilder(columns, table, joins=None, group_by=None, filter=None, order_by=None, limit=None):
     query = "SELECT " + ', '.join(columns) + " FROM " + table + " "
     if joins is not None:
-        query += " ".join(joins) + " "
+        if type(joins) is list:
+            query += " ".join(joins) + " "
+        else:
+            query += " " + joins + " "
     if group_by is not None:
         query += 'GROUP BY {} '.format(group_by)
     if filter is not None:
