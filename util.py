@@ -38,4 +38,4 @@ class Timer():
         self.elapsed = self.end-self.start
 
     def __str__(self):
-        return str(self.elapsed)+"ms"
+        return '{:.3}s'.format(self.elapsed)
