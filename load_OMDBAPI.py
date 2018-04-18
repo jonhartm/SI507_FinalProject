@@ -41,6 +41,12 @@ def InitializeOMDBImport():
         		ORDER BY COUNT(*) DESC
         		LIMIT 500
         	)
+        OR FilmID IN
+        	(
+        		SELECT FilmID
+        		FROM Film
+        		WHERE AA_Wins > 1
+        	)
     '''
     cur.execute(statement)
 
