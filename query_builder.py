@@ -5,7 +5,6 @@
 #                  the last item in the list can be either a string or a number
 #         order_by - a list of columns to order the data by
 #         limit - a list to determine how many tuples should be returned
-#                 must be in the format ["top"|"bottom", int]
 
 def selectQueryBuilder(columns, table, joins=None, group_by=None, filter=None, order_by=None, limit=None):
     query = "SELECT " + ', '.join(columns) + " FROM " + table + " "
@@ -28,9 +27,7 @@ def selectQueryBuilder(columns, table, joins=None, group_by=None, filter=None, o
         else:
             query += "ORDER BY " + order_by + " "
     if limit is not None:
-        if limit[0] == "top":
-            query += "DESC "
-        query += "LIMIT " + str(limit[1 ])
+        query += "LIMIT " + str(limit)
     return query.strip()
 
 def selectQueryBuilder_filterParse(filter):
