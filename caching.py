@@ -4,8 +4,6 @@ import datetime as dt
 import json
 from bs4 import BeautifulSoup
 
-# CACHE_FILE = 'proj2_caching.json'
-
 class CacheFile():
     def __init__(self, filename, print_info=False):
         self.filename = filename
@@ -107,4 +105,4 @@ class CacheFile():
 
         with open(self.filename, 'w') as f:
             f.write(json.dumps(self.API_cache)) # write the contents of the cache dictionary to the cache
-        return json.loads(response.text)
+        return to_save
