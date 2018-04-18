@@ -1,5 +1,5 @@
 from caching import *
-from util import tryParseInt
+from util import tryParseInt, Timer
 from bs4 import BeautifulSoup
 from bs4 import SoupStrainer
 import sqlite3

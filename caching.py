@@ -73,14 +73,19 @@ class CacheFile():
         return BeautifulSoup(self.API_cache[unique_ID]['html'], 'html.parser')
 
     # Checks the cache file for a combination of url and keys to see if this API call exists in the cache already.
-    # params: a string for the url and a dictionary of paramaters
+    # params: a string for the url
+    #         a dictionary of paramaters for the API
+    #         (optional) a timedelta for the age at which data would be considered stale
+    #         (optional) a list of specific keys to store in the cache, which cuts down on access time for large cache files
     # returns: a dictionary of json, either pulled from the API or loaded from the cache
-    def CheckCache_API(self, url, params, max_age=None):
+    def CheckCache_API(self, url, params, max_age=None, keys=None):
         param_keys = sorted(params.keys()) # sort the paramaters so we know they'll be in the same order even if they aren't in order in the dictionary attribute
         unique_ID = url # start creating the unique_ID with the URL
         for k in param_keys:
             if not("api" in k and "key" in k): # skip anything with the words "api" and "key"
                 unique_ID += "_" + k + "_" + params[k].lower()
+        if keys is not None:
+            unique_ID += '_' + '_'.join(keys)
 
         # check to see if this unique ID is stored in the cache, and if not, make a request and add it
         if unique_ID in self.API_cache:
@@ -90,7 +95,15 @@ class CacheFile():
             if self.print_info: print("New request - adding to cache file.")
 
         response = requests.get(url, params=params)
-        self.API_cache[unique_ID] = json.loads(response.text)
+        if keys is None:
+            to_save = json.loads(response.text)
+        else:
+            total_response_json = json.loads(response.text)
+            to_save = {}
+            for k in keys:
+                to_save[k] = total_response_json[k]
+
+        self.API_cache[unique_ID] = to_save
 
         with open(self.filename, 'w') as f:
             f.write(json.dumps(self.API_cache)) # write the contents of the cache dictionary to the cache
