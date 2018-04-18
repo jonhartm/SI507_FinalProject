@@ -20,7 +20,10 @@ def selectQueryBuilder(columns, table, joins=None, group_by=None, filter=None, o
         else:
             query += 'HAVING ' + selectQueryBuilder_filterParse(filter)
     if order_by is not None:
-        query += "ORDER BY " + ','.join(order_by) + " "
+        if type(order_by) is list:
+            query += "ORDER BY " + ','.join(order_by) + " "
+        else:
+            query += "ORDER BY " + order_by + " "
     if limit is not None:
         if limit[0] == "top":
             query += "DESC "

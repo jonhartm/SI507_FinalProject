@@ -29,3 +29,10 @@ def Graph_AAWinners(count=10, show_nominations=True):
 
 def MakeBarTrace():
     pass
+
+print(selectQueryBuilder(
+    columns = ['Title','Release','AA_Wins'],
+    table = 'Film',
+    order_by ='AA_Wins',
+    limit=['top',10]
+))
