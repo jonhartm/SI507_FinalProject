@@ -1,14 +1,15 @@
 import sqlite3
 import pandas as pd
 import csv
+import os
 from settings import *
 
-out_file = "small_credits.csv"
-
+out_file = "data/small_credits.csv"
+os.remove(out_file)
 conn = sqlite3.connect("movies.db")
 cur = conn.cursor()
 
-statement = 'SELECT FilmID FROM Films WHERE AcademyAward is NOT null'
+statement = 'SELECT FilmID FROM Film WHERE AA_Wins > 1'
 # statement = '''
 # SELECT FilmID FROM Films
 # WHERE Rating_IMDB is not null
