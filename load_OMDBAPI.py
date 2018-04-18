@@ -6,7 +6,7 @@ import sqlite3
 Database_Name = "movies.db"
 
 def Import_OMD(title, year=None):
-    OMD_Cache = CacheFile('Alt_OMDBCache.json')
+    OMD_Cache = CacheFile('OMDBCache.json')
     url = 'http://www.omdbapi.com'
     params = {'apikey':OMDB_API_KEY, "t":title}
     if year is not None:
@@ -65,5 +65,3 @@ def InitializeOMDBImport():
 
     t.Stop()
     print("OMDB Import completed in " + str(t))
-
-InitializeOMDBImport()
