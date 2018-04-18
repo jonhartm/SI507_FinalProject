@@ -7,7 +7,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    return '<h1>Welcome!</h1>'
+    return render_template("index.html")
 
 @app.route('/AA_Winners', methods=['GET', 'POST'])
 def AA_Winners():
@@ -31,6 +31,10 @@ def AA_Winners():
         show_nom=show_nom,
         sort=sort
         )
+
+@app.route('/Ratings', methods=['GET', 'POST'])
+def Ratings():
+    return render_template("ratings.html")
 
 if __name__=="__main__":
     if len(sys.argv) >= 2:
