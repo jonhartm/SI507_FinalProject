@@ -11,8 +11,7 @@ from settings import *
 class TestDatabaseInitialize(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        # ResetDatabase()
-        pass
+        ResetDatabase()
 
     def test_FilmTable(self):
         with sqlite.connect(DATABASE_NAME) as conn:
