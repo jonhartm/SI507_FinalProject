@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Jonathan Hartman - 507 Project - Movie Thing</title>
+  <!-- https://stackoverflow.com/questions/14711552/external-javascript-file-is-not-getting-added-when-runs-on-flask -->
+  <script type="text/javascript" src="{{ url_for('static', filename='plotly-latest.min.js') }}"></script>
+</head>
+<body>
+  <h1>Academy Award Statistics</h1>
+  <form method='post'>
+    <label for="sort_by">Sort By:</label>
+    <select name="sort_by">
+      <option value="wins" {% if sort == 'wins' %} selected {% endif %}>Total Wins</option>
+      <option value="noms" {% if sort == 'noms' %} selected {% endif %}>Nominations</option>
+    </select>
+
+    <label for="show_nom">Show Nominations</label>
+    <input type="checkbox" name="show_nom" {% if show_nom %} checked {% endif %}>
+
+    <label for="count">Records to Show</label>
+    <input type="number" name="count" value={{count}} step=10 min=0 max=590>
+
+    <input type="submit" value="Refresh">
+  </form>
+  <p>Top {{count}} films with the most Academy Award {% if sort == 'wins' %} Wins {% else %} Nominations {% endif %}</p>
+  {{graph|safe}}
+</body>
