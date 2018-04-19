@@ -27,6 +27,7 @@
     {% endfor %}
     </table>
   </div>
+  {% if cast_crew_data is iterable %}
   <button type="button" id="toggle_castcrew_data">Show/Hide Cast and Crew Data</button>
   <div class="castcrew_data">
     <table border=1>
@@ -42,6 +43,7 @@
     {% endfor %}
     </table>
   </div>
+  {% endif %}
   <script>
     $(document).ready(function() {
       $(".ratings_data").hide();

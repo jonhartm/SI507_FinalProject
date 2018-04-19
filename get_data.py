@@ -26,4 +26,7 @@ def GetCastAndCrew(title, year):
     for row in cur:
         data.append(row)
 
-    return data
+    if len(data) > 0:
+        return data
+    else:
+        return None
