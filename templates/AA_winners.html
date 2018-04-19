@@ -18,11 +18,10 @@
     <input type="checkbox" name="show_nom" {% if show_nom %} checked {% endif %}>
 
     <label for="count">Records to Show</label>
-    <input type="number" name="count" value={{count}} step=10 min=0 max=590>
+    <input type="number" name="count" value={{count}} step=10 min=10 max=590>
 
     <input type="submit" value="Refresh">
   </form>
-  <p>Top {{count}} films with the most Academy Award {% if sort == 'wins' %} Wins {% else %} Nominations {% endif %}</p>
   {{graph|safe}}
   <table border=1>
     <tr>

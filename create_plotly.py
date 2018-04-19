@@ -74,7 +74,15 @@ def Graph_AAWinners(sort="wins", count=10, show_nominations=True):
     if show_nominations:
         data.append(trace2.GetBar())
 
-    layout = go.Layout(barmode='stack')
+    if sort=="wins":
+        title = "Top {} films with the most Academy Award Wins".format(count)
+    else:
+        title = "Top {} films with the most Academy Award Nominations".format(count)
+
+    layout = go.Layout(
+        barmode='stack',
+        title=title
+        )
 
     fig = go.Figure(data=data, layout=layout)
 
@@ -121,7 +129,10 @@ def Graph_Ratings(sort="UserRatings", order="DESC", count=10, minimum_reviews=30
 
     data = [trace1.GetBar(), trace2.GetBar()]
 
-    layout = go.Layout(barmode="group")
+    layout = go.Layout(
+        barmode="group",
+        title="Avg Critic Rating VS Avg User Rating"
+        )
 
     fig = go.Figure(data=data, layout=layout)
 
