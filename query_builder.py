@@ -7,7 +7,10 @@
 #         limit - a list to determine how many tuples should be returned
 
 def selectQueryBuilder(columns, table, joins=None, group_by=None, filter=None, order_by=None, limit=None):
-    query = "SELECT " + ', '.join(columns) + " FROM " + table + " "
+    if type(columns) is list:
+        query = "SELECT " + ', '.join(columns) + " FROM " + table + " "
+    else:
+        query = "SELECT " + columns + " FROM " + table + " "
     if joins is not None:
         if type(joins) is list:
             query += " ".join(joins) + " "
