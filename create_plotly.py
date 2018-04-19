@@ -40,10 +40,10 @@ def Graph_AAWinners(sort="wins", count=10, show_nominations=True):
     raw_data = []
 
     for row in cur:
-        trace1.labels.append(row[0])
+        trace1.labels.append("{} ({})".format(row[0], row[1]))
         trace1.values.append(row[2])
 
-        trace2.labels.append(row[0])
+        trace2.labels.append("{} ({})".format(row[0], row[1]))
         trace2.values.append(row[3])
 
         raw_data.append(row)
@@ -89,10 +89,10 @@ def Graph_Ratings(sort="UserRatings", order="DESC", count=10, minimum_reviews=30
     trace2 = PlotlyTrace("Average User Rating")
     raw_data = []
     for row in cur:
-        trace1.labels.append(row[0])
+        trace1.labels.append("{} ({})".format(row[0], row[1]))
         trace1.values.append(row[2])
 
-        trace2.labels.append(row[0])
+        trace2.labels.append("{} ({})".format(row[0], row[1]))
         trace2.values.append(row[3])
 
         raw_data.append(row)
