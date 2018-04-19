@@ -37,6 +37,7 @@ def Graph_AAWinners(sort="wins", count=10, show_nominations=True):
     cur.execute(query)
     trace1 = PlotlyTrace("Wins")
     trace2 = PlotlyTrace("Nominations")
+    raw_data = []
 
     for row in cur:
         trace1.labels.append(row[0])
@@ -44,6 +45,8 @@ def Graph_AAWinners(sort="wins", count=10, show_nominations=True):
 
         trace2.labels.append(row[0])
         trace2.values.append(row[3])
+
+        raw_data.append(row)
 
     data = [trace1.GetBar()]
     if show_nominations:
@@ -53,7 +56,7 @@ def Graph_AAWinners(sort="wins", count=10, show_nominations=True):
 
     fig = go.Figure(data=data, layout=layout)
 
-    return offline.plot(fig, show_link=False, output_type="div", include_plotlyjs=False)
+    return offline.plot(fig, show_link=False, output_type="div", include_plotlyjs=False), raw_data
 
 def Graph_Ratings(sort="UserRatings", order="DESC", count=10, minimum_reviews=30):
     conn = sqlite.connect(DATABASE_NAME)
@@ -72,7 +75,7 @@ def Graph_Ratings(sort="UserRatings", order="DESC", count=10, minimum_reviews=30
                 'Release',
                 'ROUND(((Rating_IMDB*10)+(Rating_RT*1)+Rating_MC)/3,2) AS AvgCriticRating', # convert all of ratings to a 100 point scale and average them out
                 'ROUND(UserRatings*20,2) AS AvgUserRating', # covert the User ratings to a 100 point scale
-                'ROUND(((((Rating_IMDB*10)+(Rating_RT*1)+Rating_MC)/3)-(UserRatings*20)),2) AS RatingDiff' # just AvgCriticRating-AvgUserRating
+                'ABS(ROUND(((((Rating_IMDB*10)+(Rating_RT*1)+Rating_MC)/3)-(UserRatings*20)),2)) AS RatingDiff ' # just ABS(AvgCriticRating-AvgUserRating)
             ],
             table = 'Film',
             joins = "JOIN ("+sub_query+") ON FilmID == MovieID",
@@ -84,6 +87,7 @@ def Graph_Ratings(sort="UserRatings", order="DESC", count=10, minimum_reviews=30
     cur.execute(query)
     trace1 = PlotlyTrace("Average Critic Rating")
     trace2 = PlotlyTrace("Average User Rating")
+    raw_data = []
     for row in cur:
         trace1.labels.append(row[0])
         trace1.values.append(row[2])
@@ -91,31 +95,12 @@ def Graph_Ratings(sort="UserRatings", order="DESC", count=10, minimum_reviews=30
         trace2.labels.append(row[0])
         trace2.values.append(row[3])
 
+        raw_data.append(row)
+
     data = [trace1.GetBar(), trace2.GetBar()]
 
     layout = go.Layout(barmode="group")
 
     fig = go.Figure(data=data, layout=layout)
 
-    return offline.plot(fig, show_link=False, output_type="div", include_plotlyjs=False)
-
-# print("Top films by User Rating")
-# sub_query = selectQueryBuilder(
-#     columns = ['MovieID', 'AVG(Rating) AS UserRatings'],
-#     table = 'Ratings',
-#     group_by = 'MovieID',
-#     filter = ['COUNT(*)', '>', 30]
-# )
-# print(selectQueryBuilder(
-#     columns = [
-#         'Title',
-#         'Release',
-#         '((Rating_IMDB*10)+(Rating_RT*1)+Rating_MC)/3 AS AvgCriticRating',
-#         '(UserRatings*20) AS AvgUserRating'
-#     ],
-#     table = 'Film',
-#     joins = "JOIN ("+sub_query+") ON FilmID == MovieID",
-#     filter = ["AvgCriticRating", "IS NOT", "NULL"],
-#     order_by = "UserRatings",
-#     limit = ['top', 50]
-# ))
+    return offline.plot(fig, show_link=False, output_type="div", include_plotlyjs=False), raw_data

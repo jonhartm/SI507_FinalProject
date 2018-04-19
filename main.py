@@ -22,10 +22,11 @@ def AA_Winners():
         show_nom = request.form.get('show_nom') # https://stackoverflow.com/questions/31859903/get-the-value-of-a-checkbox-in-flask
         sort=request.form['sort_by']
 
-    display_graph = Graph_AAWinners(sort=sort, count=count, show_nominations=show_nom)
+    display_graph, raw_data = Graph_AAWinners(sort=sort, count=count, show_nominations=show_nom)
     return render_template(
         "AA_Winners.html",
         graph=display_graph,
+        raw_data=raw_data,
         count=count,
         show_nom=show_nom,
         sort=sort
@@ -42,7 +43,7 @@ def Ratings():
         order = request.form['ordering']
         count = request.form['count']
 
-    display_graph = Graph_Ratings(
+    display_graph, raw_data = Graph_Ratings(
         sort=sort,
         order=order,
         count=count,
@@ -51,6 +52,7 @@ def Ratings():
     return render_template(
         "ratings.html",
         graph=display_graph,
+        raw_data=raw_data,
         order=order,
         sort=sort,
         count=count

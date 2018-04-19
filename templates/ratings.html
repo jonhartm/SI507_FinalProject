@@ -36,4 +36,22 @@
     <input type="submit" value="Refresh">
   </form>
   {{graph|safe}}
+  <table border=1>
+    <tr>
+      <th>Title</th>
+      <th>Release</th>
+      <th>Average Critic Rating</th>
+      <th>Average User Rating</th>
+      <th>Difference</th>
+    </tr>
+  {% for row in raw_data %}
+    <tr>
+      <td>{{row[0]}}</td>
+      <td>{{row[1]}}</td>
+      <td>{{row[2]}}</td>
+      <td>{{row[3]}}</td>
+      <td>{{row[4]}}</td>
+    </tr>
+  {% endfor %}
+  </table>
 </body>

@@ -24,4 +24,20 @@
   </form>
   <p>Top {{count}} films with the most Academy Award {% if sort == 'wins' %} Wins {% else %} Nominations {% endif %}</p>
   {{graph|safe}}
+  <table border=1>
+    <tr>
+      <th>Title</th>
+      <th>Release</th>
+      <th>Academy Award Wins</th>
+      <th>Academy Award Nominations</th>
+    </tr>
+  {% for row in raw_data %}
+    <tr>
+      <td>{{row[0]}}</td>
+      <td>{{row[1]}}</td>
+      <td>{{row[2]}}</td>
+      <td>{{row[3] + row[2]}}</td>
+    </tr>
+  {% endfor %}
+  </table>
 </body>
