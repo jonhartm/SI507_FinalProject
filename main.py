@@ -58,6 +58,14 @@ def Ratings():
         count=count
         )
 
+@app.route('/Movie/<title>/<year>')
+def Movie(title, year):
+    return render_template(
+        "movie.html",
+        title=title,
+        year=year
+        )
+
 if __name__=="__main__":
     if len(sys.argv) >= 2:
         if sys.argv[1] == "--init" and len(sys.argv) == 2:
