@@ -11,19 +11,18 @@ def index():
 
 @app.route('/AA_Winners', methods=['GET', 'POST'])
 def AA_Winners():
+    sort="wins"
     count=10
     show_nom = True
-    sort="wins"
+    # if there was a post, alter any of the graph params based on that
     if request.method == "POST":
         count = request.form['count']
         if count == '':
             count = 10
         show_nom = request.form.get('show_nom') # https://stackoverflow.com/questions/31859903/get-the-value-of-a-checkbox-in-flask
         sort=request.form['sort_by']
-        display_graph = Graph_AAWinners(sort=sort, count=count, show_nominations=show_nom)
-    else:
-        #display the graph with defaults
-        display_graph = Graph_AAWinners()
+
+    display_graph = Graph_AAWinners(sort=sort, count=count, show_nominations=show_nom)
     return render_template(
         "AA_Winners.html",
         graph=display_graph,
@@ -34,7 +33,28 @@ def AA_Winners():
 
 @app.route('/Ratings', methods=['GET', 'POST'])
 def Ratings():
-    return render_template("ratings.html")
+    sort="AvgCriticRating"
+    order="DESC"
+    count=10
+    minimum_reviews=30
+    if request.method == "POST":
+        sort = request.form['sort_by']
+        order = request.form['ordering']
+        count = request.form['count']
+
+    display_graph = Graph_Ratings(
+        sort=sort,
+        order=order,
+        count=count,
+        minimum_reviews=minimum_reviews
+        )
+    return render_template(
+        "ratings.html",
+        graph=display_graph,
+        order=order,
+        sort=sort,
+        count=count
+        )
 
 if __name__=="__main__":
     if len(sys.argv) >= 2:
