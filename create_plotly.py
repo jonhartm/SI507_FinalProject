@@ -18,6 +18,26 @@ class PlotlyBarTrace(PlotlyTrace):
             name = self.name
         )
 
+class PlotlyBoxTrace(PlotlyTrace):
+    def GetBox(self):
+        return go.Box(
+            x=self.values,
+            name=self.name
+        )
+
+class PlotlyScatterTrace(PlotlyTrace):
+    def __init__(self, name):
+        self.name = name
+        self.x = []
+        self.y = []
+        self.mode = "markers"
+
+    def GetScatter(self):
+        return go.Scatter(
+            x = self.x,
+            y = self.y,
+            mode = self.mode
+        )
 
 def Graph_AAWinners(sort="wins", count=10, show_nominations=True):
     conn = sqlite.connect(DATABASE_NAME)
@@ -119,14 +139,31 @@ def Graph_MovieRatings(title, year):
     query = selectQueryBuilder(
         columns = ['UserID', 'Rating', 'datetime(Timestamp, \'unixepoch\') As Date'], #https://stackoverflow.com/questions/14629347/how-to-convert-unix-epoch-time-in-sqlite
         table = 'Ratings',
-        filter = ['MovieID', '=', "("+sub_query+")"]
+        filter = ['MovieID', '=', "("+sub_query+")"],
+        order_by = "Date DESC"
     )
 
     cur.execute(query)
+    boxtrace = PlotlyBoxTrace("User Ratings")
+    scattertrace = PlotlyScatterTrace("User Ratings")
+
     raw_data = []
     for row in cur:
+        boxtrace.values.append(row[1])
+        scattertrace.x.append(row[2])
+        scattertrace.y.append(row[1])
         raw_data.append(row)
 
-    return "<div></div>", raw_data
+    box_data = [boxtrace.GetBox()]
+    box_layout = go.Layout(
+        title="User Ratings for {} ({})".format(title, year)
+    )
+    box_fig = go.Figure(data=box_data, layout=box_layout)
 
-Graph_MovieRatings("Titanic", "1997")
+    scatter_data = [scattertrace.GetScatter()]
+    scatter_layout = go.Layout(
+        title="User Ratings Over Time for {} ({})".format(title, year)
+    )
+    scatter_fig = go.Figure(data=scatter_data, layout=scatter_layout)
+
+    return offline.plot(box_fig, show_link=False, output_type="div", include_plotlyjs=False), offline.plot(scatter_fig, show_link=False, output_type="div", include_plotlyjs=False), raw_data

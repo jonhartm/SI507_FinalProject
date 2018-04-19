@@ -60,7 +60,7 @@ def Ratings():
 
 @app.route('/Movie/<title>/<year>')
 def Movie(title, year):
-    display_graph_ratings, raw_data_ratings = Graph_MovieRatings(
+    boxgraph_ratings, scattergraph_ratings, raw_data_ratings = Graph_MovieRatings(
         title=title,
         year=year
     )
@@ -68,6 +68,8 @@ def Movie(title, year):
         "movie.html",
         title=title,
         year=year,
+        boxgraph=boxgraph_ratings,
+        scattergraph=scattergraph_ratings,
         ratings_data=raw_data_ratings
         )
 
