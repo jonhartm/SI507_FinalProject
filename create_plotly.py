@@ -22,7 +22,8 @@ class PlotlyBoxTrace(PlotlyTrace):
     def GetBox(self):
         return go.Box(
             x=self.values,
-            name=self.name
+            name=self.name,
+            boxmean='sd'
         )
 
 class PlotlyScatterTrace(PlotlyTrace):
