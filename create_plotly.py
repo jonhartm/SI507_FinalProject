@@ -10,12 +10,14 @@ class PlotlyTrace():
         self.labels = []
         self.values = []
 
+class PlotlyBarTrace(PlotlyTrace):
     def GetBar(self):
         return go.Bar(
             x = self.labels,
             y = self.values,
             name = self.name
         )
+
 
 def Graph_AAWinners(sort="wins", count=10, show_nominations=True):
     conn = sqlite.connect(DATABASE_NAME)
@@ -35,8 +37,8 @@ def Graph_AAWinners(sort="wins", count=10, show_nominations=True):
     )
 
     cur.execute(query)
-    trace1 = PlotlyTrace("Wins")
-    trace2 = PlotlyTrace("Nominations")
+    trace1 = PlotlyBarTrace("Wins")
+    trace2 = PlotlyBarTrace("Nominations")
     raw_data = []
 
     for row in cur:
@@ -85,8 +87,8 @@ def Graph_Ratings(sort="UserRatings", order="DESC", count=10, minimum_reviews=30
     )
 
     cur.execute(query)
-    trace1 = PlotlyTrace("Average Critic Rating")
-    trace2 = PlotlyTrace("Average User Rating")
+    trace1 = PlotlyBarTrace("Average Critic Rating")
+    trace2 = PlotlyBarTrace("Average User Rating")
     raw_data = []
     for row in cur:
         trace1.labels.append("{} ({})".format(row[0], row[1]))
@@ -104,3 +106,27 @@ def Graph_Ratings(sort="UserRatings", order="DESC", count=10, minimum_reviews=30
     fig = go.Figure(data=data, layout=layout)
 
     return offline.plot(fig, show_link=False, output_type="div", include_plotlyjs=False), raw_data
+
+def Graph_MovieRatings(title, year):
+    conn = sqlite.connect(DATABASE_NAME)
+    cur = conn.cursor()
+
+    sub_query = selectQueryBuilder(
+        columns = 'FilmID',
+        table = 'Film',
+        filter = [['Title', "=", title], "AND", ['Release', 'LIKE', year+'%']]
+    )
+    query = selectQueryBuilder(
+        columns = ['UserID', 'Rating', 'datetime(Timestamp, \'unixepoch\') As Date'], #https://stackoverflow.com/questions/14629347/how-to-convert-unix-epoch-time-in-sqlite
+        table = 'Ratings',
+        filter = ['MovieID', '=', "("+sub_query+")"]
+    )
+
+    cur.execute(query)
+    raw_data = []
+    for row in cur:
+        raw_data.append(row)
+
+    return "<div></div>", raw_data
+
+Graph_MovieRatings("Titanic", "1997")

@@ -2,7 +2,38 @@
 <html lang="en">
 <head>
   <title>Jonathan Hartman - 507 Project - Movie Thing</title>
+  <!-- https://stackoverflow.com/questions/14711552/external-javascript-file-is-not-getting-added-when-runs-on-flask -->
+  <script type="text/javascript" src="{{ url_for('static', filename='plotly-latest.min.js') }}"></script>
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 </head>
 <body>
   <h1>Details for {{title}} ({{year}})</h1>
+  {{graph|safe}}
+  <button type="button" id="toggle_ratings_data">Show/Hide User Ratings Data</button>
+  <div class="ratings_data">
+    <table border=1>
+      <tr>
+        <th>UserID</th>
+        <th>Rating</th>
+        <th>Timestamp</th>
+
+      </tr>
+    {% for row in ratings_data %}
+      <tr>
+        <td>{{row[0]}}</td>
+        <td>{{row[1]}}</td>
+        <td>{{row[2]}}</td>
+      </tr>
+    {% endfor %}
+    </table>
+  </div>
+  <script>
+    $(document).ready(function() {
+      $(".ratings_data").hide();
+
+      $("#toggle_ratings_data").click(function() {
+        $(".ratings_data").toggle();
+      })
+    })
+  </script>
 </body>
