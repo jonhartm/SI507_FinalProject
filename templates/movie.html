@@ -37,7 +37,11 @@
       </tr>
     {% for row in cast_crew_data %}
       <tr>
+        {% if row[3] is number %}
+        <td><a href="/Person/{{row[0]}}">{{row[1]}}</a></td>
+        {% else %}
         <td>{{row[1]}}</td>
+        {% endif %}
         <td>{{row[2]}}</td>
       </tr>
     {% endfor %}

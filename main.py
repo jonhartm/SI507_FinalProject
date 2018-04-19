@@ -75,6 +75,15 @@ def Movie(title, year):
         cast_crew_data=GetCastAndCrew(title, year)
         )
 
+@app.route('/Person/<id>')
+def Person(id):
+    role_data = GetMoviesByPerson(id)
+    return render_template(
+        "person.html",
+        person=role_data[0][0],
+        role_data=role_data
+    )
+
 if __name__=="__main__":
     if len(sys.argv) >= 2:
         if sys.argv[1] == "--init" and len(sys.argv) == 2:
