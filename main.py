@@ -59,6 +59,10 @@ def Ratings():
         count=count
         )
 
+@app.route('/Budgets')
+def Budgets():
+    pass
+
 @app.route('/Movie/<title>/<year>')
 def Movie(title, year):
     boxgraph_ratings, scattergraph_ratings, raw_data_ratings = Graph_MovieRatings(
@@ -82,6 +86,14 @@ def Person(id):
         "person.html",
         person=role_data[0][0],
         role_data=role_data
+    )
+
+@app.route('/User/<id>')
+def User(id):
+    return render_template(
+    "user.html",
+    id=id,
+    ratings=GetReviewsByUser(id)
     )
 
 if __name__=="__main__":

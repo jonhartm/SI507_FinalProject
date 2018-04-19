@@ -64,3 +64,25 @@ def GetMoviesByPerson(id):
         return data
     else:
         return None
+
+def GetReviewsByUser(id):
+    conn = sqlite.connect(DATABASE_NAME)
+    cur = conn.cursor()
+
+    query = selectQueryBuilder(
+        columns=['Title', 'Release', 'Rating'],
+        table='Ratings',
+        joins = 'JOIN Film ON Film.FilmID = Ratings.MovieID',
+        filter = ['UserID', '=', id],
+        order_by = 'Rating DESC'
+    )
+
+    cur.execute(query)
+    data = []
+    for row in cur:
+        data.append(row)
+
+    if len(data) > 0:
+        return data
+    else:
+        return None

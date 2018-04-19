@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Jonathan Hartman - 507 Project - Movie Thing</title>
+  <!-- https://stackoverflow.com/questions/14711552/external-javascript-file-is-not-getting-added-when-runs-on-flask -->
+  <script type="text/javascript" src="{{ url_for('static', filename='plotly-latest.min.js') }}"></script>
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+</head>
+<body>
+  <a href="/AA_Winners">Academy Award Statistics</a>
+  <a href="/Ratings">Movie Ratings</a>s
+  <h1>Details for User ID {{id}}</h1>
+  <div class="user_ratings">
+    <table border=1>
+      <tr>
+        <th>Film</th>
+        <th>Release</th>
+        <th>User's Rating</th>
+      </tr>
+    {% for row in ratings %}
+      <tr>
+        <td><a href="/Movie/{{row[0]}}/{{row[1][:4]}}">{{row[0]}}</a></td>
+        <td>{{row[1]}}</td>
+        <td>{{row[2]}}</td>
+      </tr>
+    {% endfor %}
+    </table>
+  </div>
+</body>
