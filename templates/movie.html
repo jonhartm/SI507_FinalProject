@@ -27,7 +27,8 @@
     {% endfor %}
     </table>
   </div>
-  <div class="">
+  <button type="button" id="toggle_castcrew_data">Show/Hide Cast and Crew Data</button>
+  <div class="castcrew_data">
     <table border=1>
       <tr>
         <th>Name</th>
@@ -44,9 +45,14 @@
   <script>
     $(document).ready(function() {
       $(".ratings_data").hide();
+      $(".castcrew_data").hide();
 
       $("#toggle_ratings_data").click(function() {
         $(".ratings_data").toggle();
+      })
+
+      $("#toggle_castcrew_data").click(function() {
+        $(".castcrew_data").toggle();
       })
     })
   </script>
