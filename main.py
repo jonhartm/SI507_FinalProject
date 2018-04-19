@@ -1,6 +1,7 @@
 import sys
 from flask import Flask, render_template, request
 from init_Database import ResetDatabase
+from get_data import *
 from create_plotly import *
 
 app = Flask(__name__)
@@ -70,7 +71,8 @@ def Movie(title, year):
         year=year,
         boxgraph=boxgraph_ratings,
         scattergraph=scattergraph_ratings,
-        ratings_data=raw_data_ratings
+        ratings_data=raw_data_ratings,
+        cast_crew_data=GetCastAndCrew(title, year)
         )
 
 if __name__=="__main__":

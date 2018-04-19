@@ -17,11 +17,24 @@
         <th>UserID</th>
         <th>Rating</th>
         <th>Timestamp</th>
-
       </tr>
     {% for row in ratings_data %}
       <tr>
         <td>{{row[0]}}</td>
+        <td>{{row[1]}}</td>
+        <td>{{row[2]}}</td>
+      </tr>
+    {% endfor %}
+    </table>
+  </div>
+  <div class="">
+    <table border=1>
+      <tr>
+        <th>Name</th>
+        <th>Title</th>
+      </tr>
+    {% for row in cast_crew_data %}
+      <tr>
         <td>{{row[1]}}</td>
         <td>{{row[2]}}</td>
       </tr>
