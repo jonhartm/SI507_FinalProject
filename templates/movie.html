@@ -8,6 +8,7 @@
 </head>
 <body>
   <h1>Details for {{title}} ({{year}})</h1>
+  {% if ratings_data is iterable %}
   {{boxgraph|safe}}
   {{scattergraph|safe}}
   <button type="button" id="toggle_ratings_data">Show/Hide User Ratings Data</button>
@@ -27,6 +28,9 @@
     {% endfor %}
     </table>
   </div>
+  {% else %}
+  <p>No ratings data is available</p>
+  {% endif %}
   {% if cast_crew_data is iterable %}
   <button type="button" id="toggle_castcrew_data">Show/Hide Cast and Crew Data</button>
   <div class="castcrew_data">

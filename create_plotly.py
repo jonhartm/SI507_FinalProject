@@ -178,4 +178,7 @@ def Graph_MovieRatings(title, year):
     )
     scatter_fig = go.Figure(data=scatter_data, layout=scatter_layout)
 
+    if len(raw_data) == 0:
+        raw_data = None
+
     return offline.plot(box_fig, show_link=False, output_type="div", include_plotlyjs=False), offline.plot(scatter_fig, show_link=False, output_type="div", include_plotlyjs=False), raw_data
