@@ -1,6 +1,7 @@
 import unittest
 import sqlite3
 import os
+import os.path
 from bs4 import BeautifulSoup, SoupStrainer
 from util import *
 from init_Database import *
@@ -12,6 +13,11 @@ class TestDatabaseInitialize(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         ResetDatabase()
+
+    def test_DataFilesPresent(self):
+        self.assertTrue(os.path.exists(MOVIEMETADATA_CSV))
+        self.assertTrue(os.path.exists(CREDITS_CSV))
+        self.assertTrue(os.path.exists(RATINGS_CSV))
 
     def test_FilmTable(self):
         with sqlite.connect(DATABASE_NAME) as conn:
@@ -61,7 +67,7 @@ class TestDatabaseInitialize(unittest.TestCase):
             statement = "SELECT BestPicture, AA_Wins, AA_Nominations FROM Film WHERE FilmID = 862"
             cur.execute(statement)
             result = cur.fetchone()
-            self.assertEqual(result, (None, None, 3))
+            self.assertEqual(result, (None, 0, 3))
 
     def test_CreditsTables(self):
         with sqlite.connect(DATABASE_NAME) as conn:
@@ -77,18 +83,18 @@ class TestDatabaseInitialize(unittest.TestCase):
             '''
             cur.execute(statement)
             result = cur.fetchone()
-            self.assertEqual(result[0], 777)
+            self.assertEqual(result[0], 212)
 
             statement = '''
             SELECT COUNT(*) FROM CastByFilm
             	JOIN People ON People.ID == CastByFilm.CastID
             	JOIN Role ON Role.ID == CastByFilm.RoleID
             	JOIN Film ON Film.FilmID == CastByFilm.FilmID
-            WHERE Role.Title == "Director" AND Name = "Martin Scorsese"
+            WHERE Role.Title= "Cast" AND Name = "Tom Hanks"
             '''
             cur.execute(statement)
             result = cur.fetchone()
-            self.assertEqual(result[0], 8)
+            self.assertEqual(result[0], 5)
 
             statement = '''
             SELECT DISTINCT Film.Title, People.Name, Role.Title FROM CastByFilm
@@ -101,7 +107,7 @@ class TestDatabaseInitialize(unittest.TestCase):
             '''
             cur.execute(statement)
             result = cur.fetchone()
-            self.assertEqual(result, ("Gangs of New York", "Martin Scorsese", "Director"))
+            self.assertEqual(result, ("Hugo", "Martin Scorsese", "Director"))
 
     @classmethod
     def tearDownClass(cls):
