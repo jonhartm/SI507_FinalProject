@@ -214,6 +214,9 @@ def Graph_BudgetPerStar():
         trace.values.append(row[4])
         trace.hovertext.append("{} ({})<br>{} for {} stars".format(row[0], row[1][:4], '${:,.0f}'.format(row[2]), row[3]))
         trace.labels.append(row[0])
+        row = list(row)
+        row[2] = '${:,.0f}'.format(row[2])
+        row[4] = '${:,.0f}'.format(row[4])
         raw_data.append(row)
 
     data = [trace.GetBar()]
