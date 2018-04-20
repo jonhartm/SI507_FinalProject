@@ -16,7 +16,7 @@ def GetCastAndCrew(title, year):
     sub_query2 = selectQueryBuilder(
         columns = 'FilmID',
         table = 'Film',
-        filter = [['Title', "=", title], "AND", ['Release', 'LIKE', year+'%']]
+        filter = [['Title', "=", title], "AND", ['Release', 'LIKE', str(year)+'%']]
     )
 
     query = selectQueryBuilder(
@@ -70,11 +70,11 @@ def GetReviewsByUser(id):
     cur = conn.cursor()
 
     query = selectQueryBuilder(
-        columns=['Title', 'Release', 'Rating'],
+        columns=['Title', 'Release', 'Ratings.Rating'],
         table='Ratings',
         joins = 'JOIN Film ON Film.FilmID = Ratings.MovieID',
         filter = ['UserID', '=', id],
-        order_by = 'Rating DESC'
+        order_by = 'Ratings.Rating DESC'
     )
 
     cur.execute(query)
