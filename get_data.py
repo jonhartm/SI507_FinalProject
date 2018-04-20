@@ -65,6 +65,38 @@ def GetMoviesByPerson(id):
     else:
         return None
 
+class MovieDetails():
+    def __init__(self, title, year):
+        conn = sqlite.connect(DATABASE_NAME)
+        cur = conn.cursor()
+        query = 'SELECT * FROM Film WHERE Title="{}" AND Release LIKE "{}%"'.format(title, year)
+        cur.execute(query)
+        data = cur.fetchone()
+        self.id = data[0]
+        self.title = data[1]
+        self.release = data[2]
+        self.budget = data[3]
+        self.revenue = data[4]
+        self.runtime = data[5]
+        self.rating = data[6]
+        self.poster = data[7]
+
+        query = 'SELECT COUNT(*) FROM Ratings WHERE MovieID = {}'.format(self.id)
+        cur.execute(query)
+        data = cur.fetchone()
+        self.total_reviews = data[0]
+
+    def getBudget(self):
+        return '${:,.2f}'.format(self.budget)
+
+    def getRevenue(self):
+        return '${:,.2f}'.format(self.revenue)
+
+    def getProfit(self):
+        if self.revenue is None or self.budget is None:
+            return None
+        return '${:,.2f}'.format(self.revenue - self.budget)
+
 class UserReviews():
     def __init__(self, data):
         self.data = data

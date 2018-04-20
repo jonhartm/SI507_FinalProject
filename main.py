@@ -69,10 +69,10 @@ def Movie(title, year):
         title=title,
         year=year
     )
+    details = MovieDetails(title, year)
     return render_template(
         "movie.html",
-        title=title,
-        year=year,
+        details=details,
         boxgraph=boxgraph_ratings,
         scattergraph=scattergraph_ratings,
         ratings_data=raw_data_ratings,

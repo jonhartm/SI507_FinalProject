@@ -9,11 +9,18 @@
 <body>
   <a href="/AA_Winners">Academy Award Statistics</a>
   <a href="/Ratings">Movie Ratings</a>
-  <h1>Details for {{title}} ({{year}})</h1>
+  <h1>Details for {{details.title}} ({{details.release[:4]}})</h1>
+  <img src="{{details.poster}}">
+  <h2>Rated {{details.rating}}</h2>
+  {% if details.getProfit() %}
+  <h3>Budget: {{details.getBudget()}}</h3>
+  <h3>Revenue: {{details.getRevenue()}}</h3>
+  <h3>Profit: {{details.getProfit()}}</h3>
+  {% endif %}
   {% if ratings_data is iterable %}
   {{boxgraph|safe}}
   {{scattergraph|safe}}
-  <button type="button" id="toggle_ratings_data">Show/Hide User Ratings Data</button>
+  <button type="button" id="toggle_ratings_data">Show/Hide User Ratings Data ({{details.total_reviews}} Ratings)</button>
   <div class="ratings_data">
     <table border=1>
       <tr>
