@@ -254,11 +254,13 @@ class TestGetData(unittest.TestCase):
     def test_GetReviewsByUser(self):
         # function should return a list of tuples
         rand_user = GetReviewsByUser(164)
-        self.assertIsInstance(rand_user, list)
-        self.assertIsInstance(rand_user[0], tuple)
+        self.assertIsInstance(rand_user, UserReviews)
+        self.assertIsInstance(rand_user.data[0], tuple)
         # check specific items in the data
-        self.assertEqual(rand_user[0], ('Mission: Impossible', '1996-05-22', 5))
+        self.assertEqual(rand_user.data[0], ('Mission: Impossible', '1996-05-22', 5, 4.23, 0.77))
         self.assertEqual(len(rand_user), 44)
+        self.assertEqual(rand_user.getAvgRating(), 3.67)
+        self.assertEqual(rand_user.getAvgDifference(), -0.132)
 
         # function should return None if there is no data present
         nonsense_data = GetReviewsByUser(-1)

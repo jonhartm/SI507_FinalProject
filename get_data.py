@@ -65,14 +65,41 @@ def GetMoviesByPerson(id):
     else:
         return None
 
+class UserReviews():
+    def __init__(self, data):
+        self.data = data
+
+    def __len__(self):
+        return len(self.data)
+
+    def getAvgRating(self):
+        i = 0
+        total = 0
+        for row in self.data:
+            i += 1
+            total += row[2]
+        return round(total/i, 3)
+
+    def getAvgDifference(self):
+        i = 0
+        total = 0
+        for row in self.data:
+            i += 1
+            total += row[4]
+        return round(total/i, 3)
+
+
 def GetReviewsByUser(id):
     conn = sqlite.connect(DATABASE_NAME)
     cur = conn.cursor()
 
     query = selectQueryBuilder(
-        columns=['Title', 'Release', 'Ratings.Rating'],
+        columns=['Title', 'Release', 'Ratings.Rating', 'ROUND(AvgRating, 2) AS AvgRating', 'ROUND(Ratings.Rating - AvgRating,2) AS Difference'],
         table='Ratings',
-        joins = 'JOIN Film ON Film.FilmID = Ratings.MovieID',
+        joins = [
+            'JOIN Film ON Film.FilmID = Ratings.MovieID',
+            'JOIN (SELECT MovieID as AvgMovieID, AVG(Rating) AS AvgRating FROM Ratings GROUP BY MovieID) ON AvgMovieID = Film.FilmID'
+        ],
         filter = ['UserID', '=', id],
         order_by = 'Ratings.Rating DESC'
     )
@@ -83,6 +110,6 @@ def GetReviewsByUser(id):
         data.append(row)
 
     if len(data) > 0:
-        return data
+        return UserReviews(data)
     else:
         return None
