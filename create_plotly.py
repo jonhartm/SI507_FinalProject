@@ -224,6 +224,40 @@ def Graph_BudgetPerStar():
     fig = go.Figure(data=data, layout=layout)
     return offline.plot(fig, show_link=False, output_type="div", include_plotlyjs=False), raw_data
 
+def Graph_Budget(sort="Budget", limit=20):
+    conn = sqlite.connect(DATABASE_NAME)
+    cur = conn.cursor()
+
+    query = selectQueryBuilder(
+        columns = ['Title', 'Release', 'Budget', 'Revenue'],
+        table = 'Film',
+        filter = ['Budget', '>', 0],
+        order_by = sort + ' DESC',
+        limit = limit
+    )
+
+    cur.execute(query)
+    trace1 = PlotlyBarTrace("Budget")
+    trace2 = PlotlyBarTrace("Revenue")
+    raw_data = []
+    for row in cur:
+        trace1.values.append(row[2])
+        trace1.labels.append(row[0])
+        trace2.values.append(row[3])
+        trace2.labels.append(row[0])
+        row = list(row)
+        row[2] = '${:,.0f}'.format(row[2])
+        row[3] = '${:,.0f}'.format(row[3])
+        raw_data.append(row)
+
+    data = [trace1.GetBar(), trace2.GetBar()]
+
+    layout = go.Layout(
+        title='Top {} Movies with the Highest {}'.format(limit, sort)
+    )
+    fig = go.Figure(data=data, layout=layout)
+    return offline.plot(fig, show_link=False, output_type="div", include_plotlyjs=False), raw_data
+
 def Graph_RatingCount(rating_data):
     ratings = []
     for row in rating_data:

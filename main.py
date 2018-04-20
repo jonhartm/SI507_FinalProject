@@ -59,11 +59,21 @@ def Ratings():
         count=count
         )
 
-@app.route('/Budgets')
+@app.route('/Budget', methods=['GET', 'POST'])
 def Budgets():
+    budget_sort = "Budget"
+    budget_limit = 20
+    if request.method == "POST":
+        budget_sort = request.form['budget_sort']
+        budget_limit = request.form['budget_limit']
     dollars_per_star_graph, dps_raw_data = Graph_BudgetPerStar()
+    budget_graph, budget_raw_data = Graph_Budget(budget_sort, budget_limit)
     return render_template(
         "budget.html",
+        budget_sort=budget_sort,
+        budget_limit=budget_limit,
+        budget_graph=budget_graph,
+        budget_raw_data=budget_raw_data,
         dps_graph=dollars_per_star_graph,
         dps_raw_data=dps_raw_data
     )

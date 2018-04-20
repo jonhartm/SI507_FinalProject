@@ -10,6 +10,35 @@
   <a href="/AA_Winners">Academy Award Statistics</a>
   <a href="/Ratings">Movie Ratings</a>
   <h1>Budget</h1>
+  <h2>Top Films By Budget/Revenue</h2>
+  <form method="POST">
+    <label for="budget_sort">Sort By</label>
+    <select name="budget_sort">
+      <option value="Budget" {% if budget_sort == 'Budget' %} selected {% endif %} >Highest Budget</option>
+      <option value="Revenue" {% if budget_sort == 'Revenue' %} selected {% endif %} >Highest Revenue</option>
+    </select>
+    <label for="budget_limit">Records to Show</label>
+    <input type="number" name="budget_limit" value={{budget_limit}} step=10 min=0 max=160>
+    <input type="submit" value="Refresh">
+  </form>
+  {{budget_graph|safe}}
+  <table border=1>
+    <tr>
+      <th>Title</th>
+      <th>Release</th>
+      <th>Budget</th>
+      <th>Revenue</th>
+    </tr>
+  {% for row in budget_raw_data %}
+    <tr>
+      <td><a href="/Movie/{{row[0]}}/{{row[1][:4]}}">{{row[0]}}</a></td>
+      <td>{{row[1]}}</td>
+      <td>{{row[2]}}</td>
+      <td>{{row[3]}}</td>
+    </tr>
+  {% endfor %}
+  </table>
+  <h2>Highest Dollars Spent per Star of User Rating</h2>
   {{dps_graph|safe}}
   <table border=1>
     <tr>
