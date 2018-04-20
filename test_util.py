@@ -7,6 +7,7 @@ from util import *
 from init_Database import *
 from load_CSV import *
 from load_OMDBAPI import *
+from get_data import *
 from settings import *
 
 class TestDatabaseInitialize(unittest.TestCase):
@@ -183,7 +184,7 @@ class TestCaching(unittest.TestCase):
 class TestUtil(unittest.TestCase):
     def test_GetString(self):
         s = "{'cast_id': 14, 'character': 'Woody (voice)', 'credit_id': '52fe4284c3a36847f8024f95', 'gender': 2, 'id': 31, 'name': 'Tom Hanks', 'order': 0, 'profile_path': '/pQFoyx7rp09CJTAb932F2g8Nlho.jpg'}"
-
+        self.assertEqual(GetString(s, "credit_id"), "52fe4284c3a36847f8024f95")
         self.assertEqual(GetString(s, "name"), "Tom Hanks")
         self.assertEqual(GetString(s, "cast_id", False), "14")
 
@@ -218,5 +219,49 @@ class TestUtil(unittest.TestCase):
         parsed_json = CleanJSONString(s)
         self.assertEqual(parsed_json['name'], "Janusz Kamiński")
         self.assertEqual(parsed_json['job'], "Director of Photography")
+
+class TestGetData(unittest.TestCase):
+    def test_CastAndCrew(self):
+        # function should return a list of tuples
+        moonlight_data = GetCastAndCrew("Moonlight", "2016")
+        self.assertIsInstance(moonlight_data, list)
+        self.assertIsInstance(moonlight_data[0], tuple)
+        # check specific items in the data
+        self.assertEqual(moonlight_data[0], (10789, 'Trevante Rhodes', 'Cast', None))
+        self.assertEqual(len(moonlight_data), 110)
+
+        # function should return None if there is no data present
+        nonsense_data = GetCastAndCrew("DFGSDFGSDFGSDFG", "2525")
+        self.assertEqual(nonsense_data, None)
+
+        # function should accept either a string or an integer for the year
+        moonlight_data = GetCastAndCrew("Moonlight", 2016)
+        self.assertEqual(len(moonlight_data), 110)
+
+    def test_GetMoviesByPerson(self):
+        # function should return a list of tuples
+        thanks = GetMoviesByPerson(164)
+        self.assertIsInstance(thanks, list)
+        self.assertIsInstance(thanks[0], tuple)
+        # check specific items in the data
+        self.assertEqual(thanks[0], ('Tom Hanks', 'Apollo 13', '1995-06-30', 'Cast'))
+        self.assertEqual(len(thanks), 5)
+
+        # function should return None if there is no data present
+        nonsense_data = GetMoviesByPerson(-1)
+        self.assertEqual(nonsense_data, None)
+
+    def test_GetReviewsByUser(self):
+        # function should return a list of tuples
+        rand_user = GetReviewsByUser(164)
+        self.assertIsInstance(rand_user, list)
+        self.assertIsInstance(rand_user[0], tuple)
+        # check specific items in the data
+        self.assertEqual(rand_user[0], ('Mission: Impossible', '1996-05-22', 5))
+        self.assertEqual(len(rand_user), 44)
+
+        # function should return None if there is no data present
+        nonsense_data = GetReviewsByUser(-1)
+        self.assertEqual(nonsense_data, None)
 
 unittest.main()
