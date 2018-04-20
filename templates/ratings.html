@@ -4,6 +4,7 @@
   <title>Jonathan Hartman - 507 Project - Movie Thing</title>
   <!-- https://stackoverflow.com/questions/14711552/external-javascript-file-is-not-getting-added-when-runs-on-flask -->
   <script type="text/javascript" src="{{ url_for('static', filename='plotly-latest.min.js') }}"></script>
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 </head>
 <body>
   <a href="/AA_Winners">Academy Award Statistics</a>
@@ -11,25 +12,14 @@
   <h1>Ratings</h1>
   <form method="POST">
     <label for="sort_by">Sort By</label>
-    <select name="sort_by">
+    <select name="sort_by" id="sort_by">
       <option value="AvgCriticRating" {% if sort == 'AvgCriticRating' %} selected {% endif %} >AVG Critic Rating (IMDB/Rotten Tomatoes/Metacritic)</option>
       <option value="AvgUserRating" {% if sort == 'AvgUserRating' %} selected {% endif %} >AVG User Rating (GroupLens)</option>
       <option value="RatingDiff" {% if sort == 'RatingDiff' %} selected {% endif %} >Difference Between Critic and User ratings</option>
     </select>
 
-    <input type="radio" name="ordering" value="DESC" {% if order == 'DESC' %} checked {% endif %} >
-    {% if sort == 'RatingDiff' %}
-    Largest Difference First
-    {% else %}
-    Highest Rated First
-    {% endif %}
-    </input>
-    <input type="radio" name="ordering" value="ASC" {% if order == 'ASC' %} checked {% endif %} >
-    {% if sort == 'RatingDiff' %}
-    Smallest Difference First
-    {% else %}
-    Lowest Rated First
-    {% endif %}
+    <input type="radio" name="ordering" value="DESC" {% if order == 'DESC' %} checked {% endif %} ></input><label for="ordering" id="order_desc">(Loading...)</label>
+    <input type="radio" name="ordering" value="ASC" id="order_desc" {% if order == 'ASC' %} checked {% endif %} ><label for="ordering" id="order_asc">(Loading...)</label>
     </input>
 
     <label for="count">Records to Show</label>
@@ -56,4 +46,22 @@
     </tr>
   {% endfor %}
   </table>
+  <script>
+    $(document).ready(function() {
+      setRadioSortLabels();
+      $("#sort_by").change(function() {
+        setRadioSortLabels();
+      });
+    });
+
+    function setRadioSortLabels() {
+      if ($("#sort_by").val() == "RatingDiff") {
+        $("#order_desc").html("Largest Difference First");
+        $("#order_asc").html("Smallest Difference First");
+      } else {
+        $("#order_desc").html("Highest Rated First");
+        $("#order_asc").html("Lowest Rated First");
+      }
+    }
+  </script>
 </body>
