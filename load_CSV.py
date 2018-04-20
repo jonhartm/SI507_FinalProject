@@ -31,6 +31,30 @@ def Load_MovieData():
     print("Loading Movie data from CSV...")
     t = Timer()
     t.Start()
+    # Create a temporary table, since the dataset has duplicate IDs that violate
+    # the Primary Key Constraint of FilmId. SQLite doesn't have an ADD CONSTRAINT
+    # so we make an identical table without the constraint, fill it with data,
+    # then copy that data line by line to the new table
+    statement = '''
+    CREATE TABLE "Film_temp" (
+        'FilmID' INTEGER,
+        'Title' TEXT,
+        'Release' TEXT,
+        'Budget' INTEGER,
+        'Revenue' INTEGER,
+        'Runtime' INTEGER,
+        'Rating' TEXT,
+        'Poster' TEXT,
+        'Rating_IMDB' INTEGER,
+        'Rating_RT' INTEGER,
+        'Rating_MC' INTEGER,
+        'BestPicture' INTEGER,
+        'AA_Wins' INTEGER,
+        'AA_Nominations' INTEGERS
+    );
+    '''
+    cur.execute(statement)
+
     for f in pd.read_csv(MOVIEMETADATA_CSV, iterator=True):
         inserts = []
         for row in f.itertuples():
@@ -42,14 +66,24 @@ def Load_MovieData():
                 row[16],
                 row[17],
             ])
-        statement = 'INSERT INTO Film VALUES (?,?,?,?,?,?,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL)'
+    statement = 'INSERT INTO Film_temp VALUES (?,?,?,?,?,?,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL)'
     cur.executemany(statement,inserts)
 
     # the CSV contains duplicate entries for 29 films - remove them here
     statement = '''
-        DELETE FROM Film WHERE FilmID IN (SELECT MIN(FilmID) FROM Film GROUP BY FilmID HAVING COUNT(*) > 1)
+        DELETE FROM Film_temp WHERE FilmID IN (SELECT MIN(FilmID) FROM Film_temp GROUP BY FilmID HAVING COUNT(*) > 1)
     '''
     cur.execute(statement)
+
+    # copy the entirety of the temp table to the actual Film table, which has the PK constraint
+    cur.execute("SELECT * FROM Film_temp")
+    inserts = []
+    statement = 'INSERT INTO Film VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)'
+    for row in cur:
+        inserts.append(row)
+
+    cur.executemany(statement, inserts)
+
     t.Stop()
     print("Movie Data loaded in " + str(t))
 

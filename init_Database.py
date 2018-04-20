@@ -48,7 +48,7 @@ def ResetTable(table_name):
         DropTable("Film")
         statement = '''
         CREATE TABLE "Film" (
-            'FilmID' INTEGER,
+            'FilmID' INTEGER NOT NULL PRIMARY KEY,
             'Title' TEXT,
             'Release' TEXT,
             'Budget' INTEGER,
@@ -66,6 +66,7 @@ def ResetTable(table_name):
         '''
         cur.execute(statement)
         Load_CSV(MOVIEMETADATA_CSV)
+        DropTable("Film_temp") # drop our temp table
         AAwardWinningFilms()
         ResetTable("Ratings")
         InitializeOMDBImport()
