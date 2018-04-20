@@ -229,10 +229,22 @@ def Graph_RatingCount(rating_data):
     for row in rating_data:
         ratings.append(row[2])
 
-    data = [go.Histogram(x=ratings)]
+    conn = sqlite.connect(DATABASE_NAME)
+    cur = conn.cursor()
+    query = "SELECT Rating FROM Ratings"
+    cur.execute(query)
+    overall_ratings = []
+    for row in cur:
+        overall_ratings.append(row[0])
+
+    data = [
+        go.Histogram(x=ratings, histnorm='probability', opacity=0.5, name="User Ratings"),
+        go.Histogram(x=overall_ratings, histnorm='probability', opacity=0.5, name="Overall Ratings")
+        ]
 
     layout = go.Layout(
-        title="User Rating Count ({} Ratings)".format(len(rating_data))
+        title="User Rating Count ({} Ratings)".format(len(rating_data)),
+        barmode='overlay'
     )
 
     fig = go.Figure(data=data, layout=layout)
