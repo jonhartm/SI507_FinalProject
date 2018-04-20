@@ -205,8 +205,6 @@ def Graph_BudgetPerStar():
         limit = 30
     )
 
-    print(query)
-
     cur.execute(query)
     trace = PlotlyBarTrace("Dollars Per Star")
     raw_data = []
