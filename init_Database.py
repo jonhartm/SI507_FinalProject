@@ -14,18 +14,28 @@ from load_OMDBAPI import InitializeOMDBImport
 
 # reset the database
 def ResetDatabase():
-    t = Timer()
-    t.Start()
-    global cur
-    conn = sqlite.connect(DATABASE_NAME)
-    cur = conn.cursor()
+    try:
+        t = Timer()
+        t.Start()
+        global cur
+        conn = sqlite.connect(DATABASE_NAME)
+        cur = conn.cursor()
 
-    ResetTable("Film") # will also reset ratings when it's done
-    ResetTable("Credits")
+        ResetTable("Film") # will also reset ratings when it's done
+        ResetTable("Credits")
 
-    conn.commit()
-    t.Stop()
-    print("Database Reset in " + str(t))
+        conn.commit()
+        t.Stop()
+        print("Database Reset in " + str(t))
+    except sqlite.OperationalError as e:
+        if str(e) == "database is locked":
+            print(DATABASE_NAME + " has pending changes. Write those changes and restart")
+        else:
+            print("Database ERROR: " + str(e))
+            print(type(e))
+    except Exception as e:
+        print("ERROR: " + str(e))
+        print(type(e))
 
 # drops the specified table from the database
 def DropTable(table_name):
