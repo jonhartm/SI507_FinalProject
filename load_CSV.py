@@ -34,7 +34,7 @@ def Load_MovieData():
                 row[16],
                 row[17],
             ])
-        statement = 'INSERT INTO Film VALUES (?,?,?,?,?,?,NULL,NULL,NULL,NULL,NULL,NULL)'
+        statement = 'INSERT INTO Film VALUES (?,?,?,?,?,?,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL)'
     cur.executemany(statement,inserts)
 
     # the CSV contains duplicate entries for 29 films - remove them here

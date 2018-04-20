@@ -38,6 +38,8 @@ def ResetTable(table_name):
             'Budget' INTEGER,
             'Revenue' INTEGER,
             'Runtime' INTEGER,
+            'Rating' TEXT,
+            'Poster' TEXT,
             'Rating_IMDB' INTEGER,
             'Rating_RT' INTEGER,
             'Rating_MC' INTEGER,
