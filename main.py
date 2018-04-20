@@ -50,10 +50,13 @@ def Ratings():
         count=count,
         minimum_reviews=minimum_reviews
         )
+    dollars_per_star_graph, dps_raw_data = Graph_BudgetPerStar()
     return render_template(
         "ratings.html",
         graph=display_graph,
         raw_data=raw_data,
+        dps_graph=dollars_per_star_graph,
+        dps_raw_data=dps_raw_data,
         order=order,
         sort=sort,
         count=count

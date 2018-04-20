@@ -9,13 +9,15 @@ class PlotlyTrace():
         self.name = name
         self.labels = []
         self.values = []
+        self.hovertext = []
 
 class PlotlyBarTrace(PlotlyTrace):
     def GetBar(self):
         return go.Bar(
             x = self.labels,
             y = self.values,
-            name = self.name
+            name = self.name,
+            text=self.hovertext
         )
 
 class PlotlyBoxTrace(PlotlyTrace):
@@ -182,6 +184,44 @@ def Graph_MovieRatings(title, year):
         raw_data = None
 
     return offline.plot(box_fig, show_link=False, output_type="div", include_plotlyjs=False), offline.plot(scatter_fig, show_link=False, output_type="div", include_plotlyjs=False), raw_data
+
+def Graph_BudgetPerStar():
+    conn = sqlite.connect(DATABASE_NAME)
+    cur = conn.cursor()
+
+    subquery = selectQueryBuilder(
+        columns = ['MovieId AS RatingMovieID', 'AVG(Rating) AS UserRating'],
+        table = 'Ratings',
+        group_by = 'MovieID',
+        filter = ["COUNT(*)", ">", 30]
+    )
+
+    query = selectQueryBuilder(
+        columns = ['Title', 'Release', 'Budget', 'ROUND(UserRating, 2) AS AvgUserRating', 'ROUND(Budget/UserRating, 2) AS DollarsPerStar'],
+        table = 'Film',
+        joins = 'JOIN ('+subquery+') ON RatingMovieID = Film.FilmID',
+        filter = ['Budget', '>', 100000],
+        order_by = 'DollarsPerStar DESC',
+        limit = 30
+    )
+
+    print(query)
+
+    cur.execute(query)
+    trace = PlotlyBarTrace("Dollars Per Star")
+    raw_data = []
+    for row in cur:
+        trace.values.append(row[4])
+        trace.hovertext.append("{} ({})<br>{} for {} stars".format(row[0], row[1][:4], '${:,.0f}'.format(row[2]), row[3]))
+        trace.labels.append(row[0])
+        raw_data.append(row)
+
+    data = [trace.GetBar()]
+    layout = go.Layout(
+        title="Dollars Spent Per Star (User Reviews)"
+    )
+    fig = go.Figure(data=data, layout=layout)
+    return offline.plot(fig, show_link=False, output_type="div", include_plotlyjs=False), raw_data
 
 def Graph_RatingCount(rating_data):
     ratings = []
