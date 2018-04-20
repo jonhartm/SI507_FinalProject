@@ -1,3 +1,9 @@
+#-------------------------------------------------------------------------------
+# QUERY_BUILDER.PY
+# Creates SQL select queries based on specific parameter inputs.
+#-------------------------------------------------------------------------------
+
+
 # params: columns - a list of strings that determine which colums are returned in the query
 #         table - a string for the name of the table to pull data from
 #         joins - an array of plain Join statements as strings
@@ -5,7 +11,6 @@
 #                  the last item in the list can be either a string or a number
 #         order_by - a list of columns to order the data by
 #         limit - a list to determine how many tuples should be returned
-
 def selectQueryBuilder(columns, table, joins=None, group_by=None, filter=None, order_by=None, limit=None):
     if type(columns) is list:
         query = "SELECT " + ', '.join(columns) + " FROM " + table + " "
@@ -33,6 +38,7 @@ def selectQueryBuilder(columns, table, joins=None, group_by=None, filter=None, o
         query += "LIMIT " + str(limit)
     return query.strip()
 
+# recursive function for cases where the filter is a little more complex
 def selectQueryBuilder_filterParse(filter):
     # if the filter is multi-part, recurse through it
     for i in range(len(filter)):

@@ -1,3 +1,8 @@
+#-------------------------------------------------------------------------------
+# LOAD_CSV.PY
+# Functions for loading data from various CSVs
+#-------------------------------------------------------------------------------
+
 import csv
 import json
 import pandas as pd
@@ -7,6 +12,8 @@ from settings import *
 import sys
 from util import CleanJSONString, Timer
 
+# Creates the SQL connection, then attempts to load the provided file by calling
+# the associated function
 def Load_CSV(file_to_load):
     global cur, conn
     conn = sqlite3.connect(DATABASE_NAME)
@@ -19,6 +26,7 @@ def Load_CSV(file_to_load):
         Load_Ratings()
     conn.commit()
 
+# load Movie data from the Movie Metadata CSV
 def Load_MovieData():
     print("Loading Movie data from CSV...")
     t = Timer()
@@ -45,6 +53,7 @@ def Load_MovieData():
     t.Stop()
     print("Movie Data loaded in " + str(t))
 
+# load the Credits from the credits CSV
 def Load_Credits():
     print("Loading Film Credits from CSV...")
     t = Timer()
@@ -86,6 +95,7 @@ def Load_Credits():
     print()
     print("Credits Loaded in " + str(t))
 
+# as the Credits are iterated through, add each person in turn
 def AddPersonToDB(filmID, Name, Role):
     # check and see if this person has already been added
     cur.execute("SELECT ID FROM People WHERE Name = \"{}\"".format(Name))
@@ -111,6 +121,7 @@ def AddPersonToDB(filmID, Name, Role):
     statement = "INSERT INTO CastByFilm VALUES (?,?,?)"
     cur.execute(statement, (filmID, person_id, role_id))
 
+# load the ratings from the user ratings CSV
 def Load_Ratings():
     print("Loading Ratings data from CSV...")
     t = Timer()

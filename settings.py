@@ -1,3 +1,8 @@
+#-------------------------------------------------------------------------------
+# SETTINGS.PY
+# Global Settings used by almost every other file.
+#-------------------------------------------------------------------------------
+
 # Database File
 DATABASE_NAME = 'movies.db'
 

@@ -1,3 +1,8 @@
+#-------------------------------------------------------------------------------
+# INIT_DATABASE.PY
+# Functions for Creating/Reseting the SQL database
+#-------------------------------------------------------------------------------
+
 import sqlite3 as sqlite
 from settings import *
 from util import Timer
@@ -27,6 +32,7 @@ def DropTable(table_name):
     statment = 'DROP TABLE IF EXISTS "{}"'.format(table_name)
     cur.execute(statment)
 
+# Reset a table by dropping, recreating, and loading data
 def ResetTable(table_name):
     if table_name == "Film":
         DropTable("Film")

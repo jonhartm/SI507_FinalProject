@@ -1,3 +1,8 @@
+#-------------------------------------------------------------------------------
+# LOAD_SCRAPING.PY
+# Functions for loading data scraped from a webpage
+#-------------------------------------------------------------------------------
+
 from caching import *
 from util import tryParseInt, Timer
 from bs4 import BeautifulSoup
@@ -6,6 +11,8 @@ import sqlite3
 
 Database_Name = 'movies.db'
 
+# class for storing data loaded in by the scraping function and converting it to
+# a tuple for updating the database
 class FilmAcademyAward():
     def __init__(self):
         self.title = None
@@ -26,6 +33,7 @@ class FilmAcademyAward():
         else:
             return "{} ({}): {} Wins - {} Nominations".format(self.title, self.year, self.Awards, self.Nominations)
 
+# Initilizes the scraping of the wikipedia page for Academy Award Winning films
 def AAwardWinningFilms():
     t = Timer()
     t.Start()

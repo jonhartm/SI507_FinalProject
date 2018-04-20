@@ -1,7 +1,16 @@
+#-------------------------------------------------------------------------------
+# GET_DATA.PY
+# Gets data for displaying in tables that isn't nessecarily associated with a
+# specific plotly graph from CREATE_PLOTLY.PY
+#-------------------------------------------------------------------------------
+
 import sqlite3 as sqlite
 from query_builder import selectQueryBuilder
 from settings import *
 
+# Gets a list of the cast and crew for a film
+# params: title: the title of the Film
+#         year: the year the film was released
 def GetCastAndCrew(title, year):
     conn = sqlite.connect(DATABASE_NAME)
     cur = conn.cursor()
@@ -40,6 +49,8 @@ def GetCastAndCrew(title, year):
     else:
         return None
 
+# Gets a list of the films a person is related to in the database
+# params: id: the Id of this person in the People table
 def GetMoviesByPerson(id):
     conn = sqlite.connect(DATABASE_NAME)
     cur = conn.cursor()
@@ -65,7 +76,10 @@ def GetMoviesByPerson(id):
     else:
         return None
 
+# Class for Loading basic details about a movie
 class MovieDetails():
+    # params: title: the title of the Film
+    #         year: the year the film was released
     def __init__(self, title, year):
         conn = sqlite.connect(DATABASE_NAME)
         cur = conn.cursor()
@@ -86,24 +100,33 @@ class MovieDetails():
         data = cur.fetchone()
         self.total_reviews = data[0]
 
+    # gets a currency formatted string to display the film's budget
     def getBudget(self):
         return '${:,.2f}'.format(self.budget)
 
+    # gets a currency formatted string to display the film's revenue
     def getRevenue(self):
         return '${:,.2f}'.format(self.revenue)
 
+    # gets a currency formatted string to display the film's profit
+    # will return None if either Budget or Revenue was not supplied
     def getProfit(self):
         if self.revenue == 0 or self.budget == 0:
             return None
         return '${:,.2f}'.format(self.revenue - self.budget)
 
+# class for loading and sorting User Review data for the User table
 class UserReviews():
     def __init__(self, data):
         self.data = data
 
+    # Gets the number of reviews in this set
     def __len__(self):
         return len(self.data)
 
+    # Returns a sorted copy of the data
+    # params: sort: The Column to sort by. either "UserRating", "AvgUserRating", or "Difference"
+    #         order: Should the column be sorted in ascending or descending order
     def getData(self, sort="UserRating", order="desc"):
         if sort == "UserRating":
             return sorted(self.data, key=lambda x: x[2], reverse=(order=="desc"))
@@ -114,6 +137,7 @@ class UserReviews():
         else:
             raise ValueError("Unknown Sort type in UserReviews.GetData(): " + sort)
 
+    # gets the average rating this user gave across all reviews
     def getAvgRating(self):
         i = 0
         total = 0
@@ -122,6 +146,7 @@ class UserReviews():
             total += row[2]
         return round(total/i, 3)
 
+    # gets the average difference between this user's reviews and all other reviews
     def getAvgDifference(self):
         i = 0
         total = 0
@@ -130,7 +155,7 @@ class UserReviews():
             total += row[4]
         return round(total/i, 3)
 
-
+# Gets a list of the reviews submitted by this user
 def GetReviewsByUser(id):
     conn = sqlite.connect(DATABASE_NAME)
     cur = conn.cursor()

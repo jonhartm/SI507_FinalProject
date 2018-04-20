@@ -1,3 +1,8 @@
+#-------------------------------------------------------------------------------
+# TEST_CASES.PY
+# Unit tests to cover database initailization, loading, and data processing
+#-------------------------------------------------------------------------------
+
 import unittest
 import sqlite3
 import os

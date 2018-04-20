@@ -1,3 +1,9 @@
+#-------------------------------------------------------------------------------
+# MAIN.PY
+# Flask routes live here. Running without arguments will start a flask server.
+# running with "--init" will reset the database
+#-------------------------------------------------------------------------------
+
 import sys
 from flask import Flask, render_template, request
 from init_Database import ResetDatabase

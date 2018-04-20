@@ -1,9 +1,15 @@
+#-------------------------------------------------------------------------------
+# CREATE_PLOTLY.PY
+# Functions for creating html divs with plotly graphs
+#-------------------------------------------------------------------------------
+
 import sqlite3 as sqlite
 import plotly.offline as offline
 import plotly.graph_objs as go
 from query_builder import selectQueryBuilder
 from settings import *
 
+# generic class to create a trace for plotly
 class PlotlyTrace():
     def __init__(self, name):
         self.name = name
@@ -11,6 +17,7 @@ class PlotlyTrace():
         self.values = []
         self.hovertext = []
 
+# class specifically for creating Bar Plot traces
 class PlotlyBarTrace(PlotlyTrace):
     def GetBar(self):
         return go.Bar(
@@ -20,6 +27,7 @@ class PlotlyBarTrace(PlotlyTrace):
             text=self.hovertext
         )
 
+# class specifically for creating Box Plot traces
 class PlotlyBoxTrace(PlotlyTrace):
     def GetBox(self):
         return go.Box(
@@ -28,6 +36,7 @@ class PlotlyBoxTrace(PlotlyTrace):
             boxmean='sd'
         )
 
+# class specifically for creating Scatter Plot traces
 class PlotlyScatterTrace(PlotlyTrace):
     def __init__(self, name):
         self.name = name
@@ -42,6 +51,10 @@ class PlotlyScatterTrace(PlotlyTrace):
             mode = self.mode
         )
 
+# Creates a graph of Academy Award Winners
+# params: sort: either "wins" or "noms". Sets the variable to sort the graph by
+#         count: the number of records to show
+#         show_nominations: if the nominations trace should be included in the graph
 def Graph_AAWinners(sort="wins", count=10, show_nominations=True):
     conn = sqlite.connect(DATABASE_NAME)
     cur = conn.cursor()
@@ -54,7 +67,6 @@ def Graph_AAWinners(sort="wins", count=10, show_nominations=True):
     query = selectQueryBuilder(
         columns = ['Title','Release','AA_Wins', '(AA_Nominations - AA_Wins) AS NomNotWon'],
         table = 'Film',
-
         order_by = order,
         limit=count
     )
@@ -91,7 +103,12 @@ def Graph_AAWinners(sort="wins", count=10, show_nominations=True):
 
     return offline.plot(fig, show_link=False, output_type="div", include_plotlyjs=False), raw_data
 
-def Graph_Ratings(sort="UserRatings", order="DESC", count=10, minimum_reviews=30):
+# Creates a histogram to compare user ratings to critic ratings
+# params: sort: Sets the variable to sort the graph by - UserRatings, AvgCriticRating, or RatingDiff
+#         order: Show either the top or bottom of the list. Either "DESC" or "cast_crew_data"
+#         count: the number of records to show
+#         minimum_reviews: the minimum number of user reviews a film should have to be included
+def Graph_Ratings(sort="UserRatings", order="DESC", count=10, minimum_reviews=20):
     conn = sqlite.connect(DATABASE_NAME)
     cur = conn.cursor()
 
@@ -141,6 +158,9 @@ def Graph_Ratings(sort="UserRatings", order="DESC", count=10, minimum_reviews=30
 
     return offline.plot(fig, show_link=False, output_type="div", include_plotlyjs=False), raw_data
 
+# Creates two graphs related to the ratings for a particular movie
+# params: title: the title of the movie to look up
+#         year: the year of the movie
 def Graph_MovieRatings(title, year):
     conn = sqlite.connect(DATABASE_NAME)
     cur = conn.cursor()
@@ -185,6 +205,7 @@ def Graph_MovieRatings(title, year):
 
     return offline.plot(box_fig, show_link=False, output_type="div", include_plotlyjs=False), offline.plot(scatter_fig, show_link=False, output_type="div", include_plotlyjs=False), raw_data
 
+# Creates a graph indicating the cost of making a given film / the number of stars given by users
 def Graph_BudgetPerStar():
     conn = sqlite.connect(DATABASE_NAME)
     cur = conn.cursor()
@@ -224,6 +245,9 @@ def Graph_BudgetPerStar():
     fig = go.Figure(data=data, layout=layout)
     return offline.plot(fig, show_link=False, output_type="div", include_plotlyjs=False), raw_data
 
+# Creates a graph to display the budget and revenue of films
+# params: sort: what should be used to sort the results. Either "Budget" or "Revenue"
+#         limit: the number of records to include
 def Graph_Budget(sort="Budget", limit=20):
     conn = sqlite.connect(DATABASE_NAME)
     cur = conn.cursor()
@@ -258,6 +282,7 @@ def Graph_Budget(sort="Budget", limit=20):
     fig = go.Figure(data=data, layout=layout)
     return offline.plot(fig, show_link=False, output_type="div", include_plotlyjs=False), raw_data
 
+# Creates a histogram to compare a given user's ratings with the overall ratings given
 def Graph_RatingCount(rating_data):
     ratings = []
     for row in rating_data:

@@ -1,3 +1,11 @@
+#-------------------------------------------------------------------------------
+# Just a helper that isn't really related to the rest of the program. Credits.csv
+# from Kaggle is way to large to do a speedy input (<30secs), so this can create
+# a much smaller file based on a SQL query, kind of like what the OMDBAPI load
+# does. Creates a list of movie IDs, then iterates through the credits csv and
+# creates a smaller version.
+#-------------------------------------------------------------------------------
+
 import sqlite3
 import pandas as pd
 import csv

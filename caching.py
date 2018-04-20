@@ -1,3 +1,8 @@
+#-------------------------------------------------------------------------------
+# CACHING.PY
+# All caching though API and Scraping is handled here.
+#-------------------------------------------------------------------------------
+
 import requests
 import time
 import datetime as dt
