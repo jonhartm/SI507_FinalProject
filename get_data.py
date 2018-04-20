@@ -104,11 +104,11 @@ def GetReviewsByUser(id):
     cur = conn.cursor()
 
     query = selectQueryBuilder(
-        columns=['Title', 'Release', 'Ratings.Rating', 'ROUND(AvgRating, 2) AS AvgRating', 'ROUND(Ratings.Rating - AvgRating,2) AS Difference'],
+        columns=['Title', 'Release', 'Ratings.Rating', 'ROUND(AvgRating, 2) AS AvgRating', 'ROUND(Ratings.Rating - AvgRating,2) AS Difference', 'NumRatings'],
         table='Ratings',
         joins = [
             'JOIN Film ON Film.FilmID = Ratings.MovieID',
-            'JOIN (SELECT MovieID as AvgMovieID, AVG(Rating) AS AvgRating FROM Ratings GROUP BY MovieID) ON AvgMovieID = Film.FilmID'
+            'JOIN (SELECT MovieID as AvgMovieID, AVG(Rating) AS AvgRating, COUNT(*) AS NumRatings FROM Ratings GROUP BY MovieID) ON AvgMovieID = Film.FilmID'
         ],
         filter = ['UserID', '=', id],
         order_by = 'Ratings.Rating DESC'
