@@ -93,7 +93,7 @@ class MovieDetails():
         return '${:,.2f}'.format(self.revenue)
 
     def getProfit(self):
-        if self.revenue is None or self.budget is None:
+        if self.revenue == 0 or self.budget == 0:
             return None
         return '${:,.2f}'.format(self.revenue - self.budget)
 
