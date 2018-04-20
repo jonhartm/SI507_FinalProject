@@ -50,13 +50,10 @@ def Ratings():
         count=count,
         minimum_reviews=minimum_reviews
         )
-    dollars_per_star_graph, dps_raw_data = Graph_BudgetPerStar()
     return render_template(
         "ratings.html",
         graph=display_graph,
         raw_data=raw_data,
-        dps_graph=dollars_per_star_graph,
-        dps_raw_data=dps_raw_data,
         order=order,
         sort=sort,
         count=count
@@ -64,7 +61,12 @@ def Ratings():
 
 @app.route('/Budgets')
 def Budgets():
-    pass
+    dollars_per_star_graph, dps_raw_data = Graph_BudgetPerStar()
+    return render_template(
+        "budget.html",
+        dps_graph=dollars_per_star_graph,
+        dps_raw_data=dps_raw_data
+    )
 
 @app.route('/Movie/<title>/<year>')
 def Movie(title, year):
