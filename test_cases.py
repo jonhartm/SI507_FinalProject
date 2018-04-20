@@ -13,6 +13,7 @@ from init_Database import *
 from load_CSV import *
 from load_OMDBAPI import *
 from get_data import *
+from secrets import *
 from settings import *
 
 class TestDatabaseInitialize(unittest.TestCase):
@@ -24,6 +25,10 @@ class TestDatabaseInitialize(unittest.TestCase):
         self.assertTrue(os.path.exists(MOVIEMETADATA_CSV))
         self.assertTrue(os.path.exists(CREDITS_CSV))
         self.assertTrue(os.path.exists(RATINGS_CSV))
+
+    def test_SecretsFilePresent(self):
+        self.assertTrue(os.path.exists("secrets.py"))
+        self.assertTrue(OMDB_API_KEY is not '')
 
     def test_FilmTable(self):
         with sqlite.connect(DATABASE_NAME) as conn:
