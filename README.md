@@ -8,7 +8,7 @@ ______
 ### How To Run:
 
 ##### Secrets.py
-Before anything, you'll need to edit **secrets.py** and enter in your API Key for the Open Movie Database. (You can request a key [here](http://www.omdbapi.com/apikey.aspx]).
+Before anything, you'll need to rename **secrets-CHANGEME.py** to **secrets.py** and enter in your API Key for the Open Movie Database. (You can request a key [here](http://www.omdbapi.com/apikey.aspx]).
 
 ##### Initialize The Database
 Prior to running the main application, you will need to initialize the database. This is done from the command line by running "**python main.py --init**". The "--init" flag will create a new database called "movies.db", as well as a pair of .json cache files (OMDBCache.json and WikipediaCache.json). The first time it should take in the area of 90 seconds to pull all of the required data into the cache files - subsequent runs should take on the order of 30 seconds.
