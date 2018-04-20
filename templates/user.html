@@ -11,17 +11,32 @@
   <a href="/Ratings">Movie Ratings</a>s
   <h1>Details for User ID {{id}}</h1>
   <div class="user_ratings">
+    <form method="POST">
+      <label for="sort_by">Sort By:</label>
+      <select name="sort_by">
+        <option value="UserRating" {% if sort == 'UserRating' %} selected {% endif %}>User's Rating</option>
+        <option value="AvgUserRating" {% if sort == 'AvgUserRating' %} selected {% endif %}>Average User Rating</option>
+        <option value="Difference" {% if sort == 'Difference' %} selected {% endif %}>Difference Between User and Average</option>
+      </select>
+      <input type="radio" name="ordering" value="desc" {% if order == 'desc' %} checked {% endif %} ></input><label for="ordering">Highest First</label>
+      <input type="radio" name="ordering" value="asc" {% if order == 'asc' %} checked {% endif %} ></input><label for="ordering">Lowest First</label>
+      <input type="submit" value="Refresh">
+    </form>
     <table border=1>
       <tr>
         <th>Film</th>
         <th>Release</th>
         <th>User's Rating</th>
+        <th>Average User Rating</th>
+        <th>Difference</th>
       </tr>
-    {% for row in ratings %}
+    {% for row in ratings.getData(sort, order) %}
       <tr>
         <td><a href="/Movie/{{row[0]}}/{{row[1][:4]}}">{{row[0]}}</a></td>
         <td>{{row[1]}}</td>
         <td>{{row[2]}}</td>
+        <td>{{row[3]}}</td>
+        <td>{{row[4]}}</td>
       </tr>
     {% endfor %}
     </table>

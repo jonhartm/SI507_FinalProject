@@ -88,12 +88,19 @@ def Person(id):
         role_data=role_data
     )
 
-@app.route('/User/<id>')
+@app.route('/User/<id>', methods=['GET', 'POST'])
 def User(id):
+    sort="UserRating"
+    order="desc"
+    if request.method == "POST":
+        sort = request.form['sort_by']
+        order = request.form['ordering']
     return render_template(
     "user.html",
     id=id,
-    ratings=GetReviewsByUser(id)
+    ratings=GetReviewsByUser(id),
+    sort=sort,
+    order=order
     )
 
 if __name__=="__main__":
