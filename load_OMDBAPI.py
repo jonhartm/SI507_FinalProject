@@ -71,15 +71,34 @@ def InitializeOMDBImport():
             values[1] = OMD_data['Poster']
             for ratings in OMD_data['Ratings']:
                 if ratings['Source'] == "Internet Movie Database": values[2] = ratings['Value'].split('/')[0]
-                elif ratings['Source'] == "Rotten Tomatoes": values[3] = ratings['Value']
+                if ratings['Source'] == "Rotten Tomatoes": values[3] = ratings['Value']
                 if ratings['Source'] == "Metacritic": values[4] = ratings['Value'].split('/')[0]
             updates.append(values)
         except Exception as e:
             pass
-    statement = 'UPDATE Film SET Rating=?, Poster=?, Rating_IMDB = ?, Rating_RT=?, Rating_MC=? WHERE Title == ? AND Release == ?';
+    statement = 'UPDATE Film SET Rating=?, Poster=?, Rating_IMDB = ?, Rating_RT=?, Rating_MC=? WHERE Title == ? AND Release == ?'
     cur.executemany(statement, updates)
     conn.commit()
     conn.close()
 
     t.Stop()
     print("OMDB Import completed in " + str(t))
+
+def ImportAndAddOMDBData(title, year):
+    OMD_data = Import_OMD(title, year)
+    values = [None, None, None, None, None, title, year+"%"]
+    values[0] = OMD_data['Rated']
+    values[1] = OMD_data['Poster']
+    for ratings in OMD_data['Ratings']:
+        if ratings['Source'] == "Internet Movie Database": values[2] = ratings['Value'].split('/')[0]
+        if ratings['Source'] == "Rotten Tomatoes": values[3] = ratings['Value']
+        if ratings['Source'] == "Metacritic": values[4] = ratings['Value'].split('/')[0]
+    print(title, year)
+    print(values)
+    conn = sqlite3.connect(Database_Name)
+    cur = conn.cursor()
+    statement = 'UPDATE Film SET Rating=?, Poster=?, Rating_IMDB = ?, Rating_RT=?, Rating_MC=? WHERE Title == ? AND Release LIKE ?'
+    cur.execute(statement, values)
+    conn.commit()
+    conn.close()
+    return OMD_data

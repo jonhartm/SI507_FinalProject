@@ -6,6 +6,7 @@
 
 import sqlite3 as sqlite
 from query_builder import selectQueryBuilder
+from load_OMDBAPI import ImportAndAddOMDBData
 from settings import *
 
 # Gets a list of the cast and crew for a film
@@ -86,6 +87,7 @@ class MovieDetails():
         query = 'SELECT * FROM Film WHERE Title="{}" AND Release LIKE "{}%"'.format(title, year)
         cur.execute(query)
         data = cur.fetchone()
+
         self.id = data[0]
         self.title = data[1]
         self.release = data[2]
@@ -94,6 +96,12 @@ class MovieDetails():
         self.runtime = data[5]
         self.rating = data[6]
         self.poster = data[7]
+
+        # If data from the OMDB API is missing for this movie, see if we can grab it real quick
+        if self.rating is None and self.poster is None:
+            data = ImportAndAddOMDBData(title, year)
+            self.rating = data['Rated']
+            self.poster = data['Poster']
 
         query = 'SELECT COUNT(*) FROM Ratings WHERE MovieID = {}'.format(self.id)
         cur.execute(query)
