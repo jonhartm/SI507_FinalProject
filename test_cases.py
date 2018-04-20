@@ -257,7 +257,7 @@ class TestGetData(unittest.TestCase):
         self.assertIsInstance(rand_user, UserReviews)
         self.assertIsInstance(rand_user.data[0], tuple)
         # check specific items in the data
-        self.assertEqual(rand_user.data[0], ('Mission: Impossible', '1996-05-22', 5, 4.23, 0.77))
+        self.assertEqual(rand_user.data[0], ('Mission: Impossible', '1996-05-22', 5, 4.23, 0.77, 31))
         self.assertEqual(len(rand_user), 44)
         self.assertEqual(rand_user.getAvgRating(), 3.67)
         self.assertEqual(rand_user.getAvgDifference(), -0.132)
@@ -275,5 +275,20 @@ class TestGetData(unittest.TestCase):
         # function should return None if there is no data present
         nonsense_data = GetReviewsByUser(-1)
         self.assertEqual(nonsense_data, None)
+
+    def test_MovieDetails(self):
+        movie = MovieDetails("Titanic", "1997")
+        self.assertEqual(movie.title, "Titanic")
+        self.assertEqual(movie.release, "1997-11-18")
+        self.assertEqual(movie.budget, 200000000)
+        self.assertEqual(movie.revenue, 1845034188)
+        self.assertEqual(movie.runtime, 194)
+        self.assertEqual(movie.rating, "PG-13")
+        self.assertEqual(movie.total_reviews, 147)
+
+        # check the formatting for currency style fields
+        self.assertEqual(movie.getBudget(), '$200,000,000.00')
+        self.assertEqual(movie.getRevenue(), '$1,845,034,188.00')
+        self.assertEqual(movie.getProfit(), '$1,645,034,188.00')
 
 unittest.main()
