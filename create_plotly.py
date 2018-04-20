@@ -65,7 +65,7 @@ def Graph_AAWinners(sort="wins", count=10, show_nominations=True):
         order = ['AA_Wins DESC', 'NomNotWon DESC']
 
     query = selectQueryBuilder(
-        columns = ['Title','Release','AA_Wins', '(AA_Nominations - AA_Wins) AS NomNotWon'],
+        columns = ['Title','Release','AA_Wins', '(AA_Nominations - AA_Wins) AS NomNotWon', 'BestPicture'],
         table = 'Film',
         order_by = order,
         limit=count
