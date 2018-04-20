@@ -182,3 +182,17 @@ def Graph_MovieRatings(title, year):
         raw_data = None
 
     return offline.plot(box_fig, show_link=False, output_type="div", include_plotlyjs=False), offline.plot(scatter_fig, show_link=False, output_type="div", include_plotlyjs=False), raw_data
+
+def Graph_RatingCount(rating_data):
+    ratings = []
+    for row in rating_data:
+        ratings.append(row[2])
+
+    data = [go.Histogram(x=ratings)]
+
+    layout = go.Layout(
+        title="User Rating Count ({} Ratings)".format(len(rating_data))
+    )
+
+    fig = go.Figure(data=data, layout=layout)
+    return offline.plot(fig, show_link=False, output_type="div", include_plotlyjs=False)

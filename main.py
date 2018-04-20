@@ -92,13 +92,16 @@ def Person(id):
 def User(id):
     sort="UserRating"
     order="desc"
+    ratings_data=GetReviewsByUser(id)
+    rating_counts=Graph_RatingCount(ratings_data.getData())
     if request.method == "POST":
         sort = request.form['sort_by']
         order = request.form['ordering']
     return render_template(
     "user.html",
     id=id,
-    ratings=GetReviewsByUser(id),
+    rating_counts=rating_counts,
+    ratings=ratings_data,
     sort=sort,
     order=order
     )
