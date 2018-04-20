@@ -262,6 +262,16 @@ class TestGetData(unittest.TestCase):
         self.assertEqual(rand_user.getAvgRating(), 3.67)
         self.assertEqual(rand_user.getAvgDifference(), -0.132)
 
+        # check that sorting works correctly
+        self.assertEqual(rand_user.getData()[0][0], "Mission: Impossible")
+        self.assertEqual(rand_user.getData(order="asc")[0][0], "Grbavica")
+
+        self.assertEqual(rand_user.getData("AvgUserRating")[0][0], "The Million Dollar Hotel")
+        self.assertEqual(rand_user.getData("AvgUserRating", order="asc")[0][0], "Grbavica")
+
+        self.assertEqual(rand_user.getData("Difference")[0][0], "Point Break")
+        self.assertEqual(rand_user.getData("Difference", order="asc")[0][0], "Grbavica")
+
         # function should return None if there is no data present
         nonsense_data = GetReviewsByUser(-1)
         self.assertEqual(nonsense_data, None)

@@ -72,6 +72,16 @@ class UserReviews():
     def __len__(self):
         return len(self.data)
 
+    def getData(self, sort="UserRating", order="desc"):
+        if sort == "UserRating":
+            return sorted(self.data, key=lambda x: x[2], reverse=(order=="desc"))
+        elif sort == "AvgUserRating":
+            return sorted(self.data, key=lambda x: x[3], reverse=(order=="desc"))
+        elif sort == "Difference":
+            return sorted(self.data, key=lambda x: x[4], reverse=(order=="desc"))
+        else:
+            raise ValueError("Unknown Sort type in UserReviews.GetData(): " + sort)
+
     def getAvgRating(self):
         i = 0
         total = 0
