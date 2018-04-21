@@ -22,8 +22,8 @@
   <h3>Profit: {{details.getProfit()}}</h3>
   {% endif %}
   {% if ratings_data is iterable %}
-  {{boxgraph|safe}}
-  {{scattergraph|safe}}
+  <div class="graph">{{boxgraph|safe}}</div>
+  <div class="graph">{{scattergraph|safe}}</div>
   <button type="button" id="toggle_ratings_data">Show/Hide User Ratings Data ({{details.total_reviews}} Ratings)</button>
   <div class="ratings_data">
     <table border=1>

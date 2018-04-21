@@ -29,7 +29,7 @@
     </div>
     <input type="submit" value="Refresh">
   </form>
-  {{budget_graph|safe}}
+  <div class="graph">{{budget_graph|safe}}</div>
   <table border=1>
     <tr>
       <th>Title</th>
@@ -47,7 +47,7 @@
   {% endfor %}
   </table>
   <h2>Highest Dollars Spent per Star of User Rating</h2>
-  {{dps_graph|safe}}
+  <div class="graph">{{dps_graph|safe}}</div>
   <table border=1>
     <tr>
       <th>Title</th>

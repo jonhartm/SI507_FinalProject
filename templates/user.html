@@ -16,7 +16,7 @@
   <h1 class="page-title">Details for User ID {{id}}</h1>
   <h3>Average Rating: {{ratings.getAvgRating()}}</h3>
   <h3>Average Difference vs Overall: {{ratings.getAvgDifference()}}</h3>
-  {{rating_counts|safe}}
+  <div class="graph">{{rating_counts|safe}}</div>
   <div class="user_ratings">
     <form method="POST">
       <div class="form-option">

@@ -50,6 +50,7 @@ nav {
 form {
   align-items: center;
   background-color: $secondary-background;
+  border: $light-border;
   border-radius: 5px;
   box-shadow: 5px 5px 10px $shadow;
   display: flex;
@@ -68,4 +69,13 @@ form {
     margin-top: 1em;
     width: 150px;
   }
+}
+
+.graph {
+  border: $heavy-border;
+  border-radius: 20px;
+  margin: 3% auto;
+  padding: 20px;
+  padding-bottom: 30px;
+  width: 80%;
 }

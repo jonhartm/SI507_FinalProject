@@ -38,6 +38,7 @@ nav {
 form {
   align-items: center;
   background-color: #c9c9c9;
+  border: 1px solid #08294f;
   border-radius: 5px;
   box-shadow: 5px 5px 10px #808080;
   display: flex;
@@ -52,5 +53,13 @@ form {
     height: 2em;
     margin-top: 1em;
     width: 150px; }
+
+.graph {
+  border: 3px solid #08294f;
+  border-radius: 20px;
+  margin: 3% auto;
+  padding: 20px;
+  padding-bottom: 30px;
+  width: 80%; }
 
 /*# sourceMappingURL=styles.css.map */
