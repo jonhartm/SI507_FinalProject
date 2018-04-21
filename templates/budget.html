@@ -19,14 +19,14 @@
   </div>
   <form method="POST">
     <div class="form-option">
-      <label for="budget_sort">Sort By</label>
+      <label for="budget_sort">Sort By:</label>
       <select name="budget_sort">
         <option value="Budget" {% if budget_sort == 'Budget' %} selected {% endif %} >Highest Budget</option>
         <option value="Revenue" {% if budget_sort == 'Revenue' %} selected {% endif %} >Highest Revenue</option>
       </select>
     </div>
     <div class="form-option">
-      <label for="budget_limit">Records to Show</label>
+      <label for="budget_limit">Records to Show:</label>
       <input type="number" name="budget_limit" value={{budget_limit}} step=10 min=0 max=160>
     </div>
     <input type="submit" value="Refresh">

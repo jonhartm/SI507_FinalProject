@@ -16,7 +16,7 @@
   <h1 class="page-title">Ratings</h1>
   <form method="POST">
     <div class="form-option">
-      <label for="sort_by">Sort By</label>
+      <label for="sort_by">Sort By:</label>
       <select name="sort_by" id="sort_by">
         <option value="AvgCriticRating" {% if sort == 'AvgCriticRating' %} selected {% endif %} >AVG Critic Rating (IMDB/Rotten Tomatoes/Metacritic)</option>
         <option value="AvgUserRating" {% if sort == 'AvgUserRating' %} selected {% endif %} >AVG User Rating (GroupLens)</option>
@@ -30,7 +30,7 @@
     </div>
 
     <div class="form-option">
-      <label for="count">Records to Show</label>
+      <label for="count">Records to Show:</label>
       <input type="number" name="count" value={{count}} step=10 min=0 max=160>
     </div>
 

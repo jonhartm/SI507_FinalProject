@@ -77,6 +77,10 @@ form {
     margin: .5em 0;
   }
 
+  input, select {
+    font-size: 16px;
+  }
+
   [type="submit"] {
     font-size: 16px;
     height: 2em;

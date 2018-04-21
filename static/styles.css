@@ -58,6 +58,8 @@ form {
   width: 33%; }
   form div {
     margin: .5em 0; }
+  form input, form select {
+    font-size: 16px; }
   form [type="submit"] {
     font-size: 16px;
     height: 2em;

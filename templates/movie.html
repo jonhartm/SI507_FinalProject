@@ -14,14 +14,16 @@
     <a href="/Budget">Budget</a>
   </nav>
   <h1 class="page-title">Details for {{details.title}} ({{details.release[:4]}})</h1>
-  {% if details.poster %}<img src="{{details.poster}}">{% endif %}
-  <h2>Rated {{details.rating}}</h2>
-  {% if details.getProfit() %}
-  <h3>Budget: {{details.getBudget()}}</h3>
-  <h3>Revenue: {{details.getRevenue()}}</h3>
-  <h3>Profit: {{details.getProfit()}}</h3>
-  {% endif %}
-  {% if ratings_data is iterable %}
+  <div class="movie-details">
+    {% if details.poster %}<img src="{{details.poster}}">{% endif %}
+    <h2>Rated {{details.rating}}</h2>
+    {% if details.getProfit() %}
+    <h3>Budget: {{details.getBudget()}}</h3>
+    <h3>Revenue: {{details.getRevenue()}}</h3>
+    <h3>Profit: {{details.getProfit()}}</h3>
+    {% endif %}
+    {% if ratings_data is iterable %}
+  </div>
   <div class="graph">{{boxgraph|safe}}</div>
   <div class="graph">{{scattergraph|safe}}</div>
   <div class="button-holder">
