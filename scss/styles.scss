@@ -6,6 +6,10 @@
   padding: 0;
 }
 
+body {
+  margin-bottom: 10%;
+}
+
 a {
   text-decoration: none;
 }
@@ -108,5 +112,17 @@ table {
   a:hover {
     background-color: $dark-accent;
     color: $white;
+  }
+}
+
+.button-holder {
+  display: flex;
+  justify-content: center;
+
+  button {
+    font-size: 16px;
+    height: 3em;
+    margin: 1em;
+    width: 40%;
   }
 }

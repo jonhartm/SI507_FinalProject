@@ -24,7 +24,9 @@
   {% if ratings_data is iterable %}
   <div class="graph">{{boxgraph|safe}}</div>
   <div class="graph">{{scattergraph|safe}}</div>
-  <button type="button" id="toggle_ratings_data">Show/Hide User Ratings Data ({{details.total_reviews}} Ratings)</button>
+  <div class="button-holder">
+    <button type="button" id="toggle_ratings_data">Show/Hide User Ratings Data ({{details.total_reviews}} Ratings)</button>
+  </div>
   <div class="ratings_data">
     <table border=1>
       <tr>
@@ -45,7 +47,9 @@
   <p>No ratings data is available</p>
   {% endif %}
   {% if cast_crew_data is iterable %}
-  <button type="button" id="toggle_castcrew_data">Show/Hide Cast and Crew Data</button>
+  <div class="button-holder">
+    <button type="button" id="toggle_castcrew_data">Show/Hide Cast and Crew Data</button>
+  </div>
   <div class="castcrew_data">
     <table border=1>
       <tr>
