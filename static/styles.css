@@ -71,6 +71,7 @@ form {
 .graph {
   border: 3px solid #08294f;
   border-radius: 20px;
+  box-shadow: 5px 5px 10px #808080;
   margin: 3% auto;
   padding: 20px;
   padding-bottom: 30px;
@@ -110,5 +111,24 @@ table {
     height: 3em;
     margin: 1em;
     width: 40%; }
+
+.movie-details {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 3%; }
+
+.movie-poster-container {
+  box-shadow: 5px 5px 10px #808080;
+  margin: 0 5%; }
+  .movie-poster-container img {
+    border: 1px solid #08294f;
+    border-radius: 10px; }
+
+.movie-budget-container {
+  margin: 0 5%;
+  text-align: center; }
+  .movie-budget-container h3 {
+    margin: auto;
+    padding: 2em 0; }
 
 /*# sourceMappingURL=styles.css.map */

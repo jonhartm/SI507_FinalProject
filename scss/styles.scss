@@ -96,6 +96,7 @@ form {
 .graph {
   border: $heavy-border;
   border-radius: 20px;
+  box-shadow: 5px 5px 10px $shadow;
   margin: 3% auto;
   padding: 20px;
   padding-bottom: 30px;
@@ -149,5 +150,31 @@ table {
     height: 3em;
     margin: 1em;
     width: 40%;
+  }
+}
+
+.movie-details {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 3%;
+}
+
+.movie-poster-container {
+  box-shadow: 5px 5px 10px $shadow;
+  margin: 0 5%;
+
+  img {
+    border: $light-border;
+    border-radius: 10px;
+  }
+}
+
+.movie-budget-container {
+  margin: 0 5%;
+  text-align: center;
+
+  h3 {
+    margin: auto;
+    padding: 2em 0;
   }
 }
