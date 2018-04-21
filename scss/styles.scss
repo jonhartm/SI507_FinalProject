@@ -51,6 +51,16 @@ nav {
   text-align: center;
 }
 
+.sub-title {
+  display: flex;
+  justify-content: center;
+
+  h3 {
+    font-size: 24px;
+    margin: 0 5em;
+  }
+}
+
 form {
   align-items: center;
   background-color: $secondary-background;
@@ -86,6 +96,7 @@ form {
 
 table {
   margin: auto;
+  margin-bottom: 4em;
 
   tr:nth-child(odd) {
     background-color: $secondary-background;

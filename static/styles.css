@@ -38,6 +38,13 @@ nav {
   margin: 1em auto;
   text-align: center; }
 
+.sub-title {
+  display: flex;
+  justify-content: center; }
+  .sub-title h3 {
+    font-size: 24px;
+    margin: 0 5em; }
+
 form {
   align-items: center;
   background-color: #c9c9c9;
@@ -66,7 +73,8 @@ form {
   width: 80%; }
 
 table {
-  margin: auto; }
+  margin: auto;
+  margin-bottom: 4em; }
   table tr:nth-child(odd) {
     background-color: #c9c9c9; }
   table tr:first-child {
