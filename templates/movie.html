@@ -3,25 +3,36 @@
 <head>
   <title>Jonathan Hartman - 507 Project - Movie Thing</title>
   <!-- https://stackoverflow.com/questions/14711552/external-javascript-file-is-not-getting-added-when-runs-on-flask -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}"></script>
   <script type="text/javascript" src="{{ url_for('static', filename='plotly-latest.min.js') }}"></script>
   <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 </head>
 <body>
-  <a href="/AA_Winners">Academy Award Statistics</a>
-  <a href="/Ratings">Movie Ratings</a>
-  <a href="/Budget">Budget</a>
-  <h1>Details for {{details.title}} ({{details.release[:4]}})</h1>
-  {% if details.poster %}<img src="{{details.poster}}">{% endif %}
-  <h2>Rated {{details.rating}}</h2>
-  {% if details.getProfit() %}
-  <h3>Budget: {{details.getBudget()}}</h3>
-  <h3>Revenue: {{details.getRevenue()}}</h3>
-  <h3>Profit: {{details.getProfit()}}</h3>
-  {% endif %}
+  <nav>
+    <a href="/AA_Winners">Academy Award Statistics</a>
+    <a href="/Ratings">Movie Ratings</a>
+    <a href="/Budget">Budget</a>
+  </nav>
+  <h1 class="page-title">Details for {{details.title}} ({{details.release[:4]}})</h1>
+  <div class="movie-details">
+    <div class="movie-budget-container">
+      <h2 class="sub-title">Rated {{details.rating}}<h2>
+      {% if details.getProfit() %}
+      <h3>Budget: {{details.getBudget()}}</h3>
+      <h3>Revenue: {{details.getRevenue()}}</h3>
+      <h3>Profit: {{details.getProfit()}}</h3>
+      {% endif %}
+    </div>
+    <div class="movie-poster-container">
+      {% if details.poster %}<img src="{{details.poster}}">{% endif %}
+    </div>
+  </div>
   {% if ratings_data is iterable %}
-  {{boxgraph|safe}}
-  {{scattergraph|safe}}
-  <button type="button" id="toggle_ratings_data">Show/Hide User Ratings Data ({{details.total_reviews}} Ratings)</button>
+  <div class="graph">{{boxgraph|safe}}</div>
+  <div class="graph">{{scattergraph|safe}}</div>
+  <div class="button-holder">
+    <button type="button" id="toggle_ratings_data">Show/Hide User Ratings Data ({{details.total_reviews}} Ratings)</button>
+  </div>
   <div class="ratings_data">
     <table border=1>
       <tr>
@@ -39,10 +50,12 @@
     </table>
   </div>
   {% else %}
-  <p>No ratings data is available</p>
+  <h3 class="sub-title">No ratings data is available</h3>
   {% endif %}
   {% if cast_crew_data is iterable %}
-  <button type="button" id="toggle_castcrew_data">Show/Hide Cast and Crew Data</button>
+  <div class="button-holder">
+    <button type="button" id="toggle_castcrew_data">Show/Hide Cast and Crew Data</button>
+  </div>
   <div class="castcrew_data">
     <table border=1>
       <tr>

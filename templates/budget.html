@@ -3,26 +3,35 @@
 <head>
   <title>Jonathan Hartman - 507 Project - Movie Thing</title>
   <!-- https://stackoverflow.com/questions/14711552/external-javascript-file-is-not-getting-added-when-runs-on-flask -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
   <script type="text/javascript" src="{{ url_for('static', filename='plotly-latest.min.js') }}"></script>
   <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 </head>
 <body>
-  <a href="/AA_Winners">Academy Award Statistics</a>
-  <a href="/Ratings">Movie Ratings</a>
-  <a href="/Budget">Budget</a>
-  <h1>Budget</h1>
-  <h2>Top Films By Budget/Revenue</h2>
+  <nav>
+    <a href="/AA_Winners">Academy Award Statistics</a>
+    <a href="/Ratings">Movie Ratings</a>
+    <a href="/Budget" class="active">Budget</a>
+  </nav>
+  <h1 class="page-title">Budget</h1>
+  <div class="sub-title">
+    <h3>Top Films By Budget/Revenue</h3>
+  </div>
   <form method="POST">
-    <label for="budget_sort">Sort By</label>
-    <select name="budget_sort">
-      <option value="Budget" {% if budget_sort == 'Budget' %} selected {% endif %} >Highest Budget</option>
-      <option value="Revenue" {% if budget_sort == 'Revenue' %} selected {% endif %} >Highest Revenue</option>
-    </select>
-    <label for="budget_limit">Records to Show</label>
-    <input type="number" name="budget_limit" value={{budget_limit}} step=10 min=0 max=160>
+    <div class="form-option">
+      <label for="budget_sort">Sort By:</label>
+      <select name="budget_sort">
+        <option value="Budget" {% if budget_sort == 'Budget' %} selected {% endif %} >Highest Budget</option>
+        <option value="Revenue" {% if budget_sort == 'Revenue' %} selected {% endif %} >Highest Revenue</option>
+      </select>
+    </div>
+    <div class="form-option">
+      <label for="budget_limit">Records to Show:</label>
+      <input type="number" name="budget_limit" value={{budget_limit}} step=10 min=0 max=160>
+    </div>
     <input type="submit" value="Refresh">
   </form>
-  {{budget_graph|safe}}
+  <div class="graph">{{budget_graph|safe}}</div>
   <table border=1>
     <tr>
       <th>Title</th>
@@ -39,8 +48,10 @@
     </tr>
   {% endfor %}
   </table>
-  <h2>Highest Dollars Spent per Star of User Rating</h2>
-  {{dps_graph|safe}}
+  <div class="sub-title">
+    <h3>Highest Dollars Spent per Star of User Rating</h3>
+  </div>
+  <div class="graph">{{dps_graph|safe}}</div>
   <table border=1>
     <tr>
       <th>Title</th>

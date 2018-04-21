@@ -3,27 +3,36 @@
 <head>
   <title>Jonathan Hartman - 507 Project - Movie Thing</title>
   <!-- https://stackoverflow.com/questions/14711552/external-javascript-file-is-not-getting-added-when-runs-on-flask -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
   <script type="text/javascript" src="{{ url_for('static', filename='plotly-latest.min.js') }}"></script>
   <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 </head>
 <body>
-  <a href="/AA_Winners">Academy Award Statistics</a>
-  <a href="/Ratings">Movie Ratings</a>
-  <a href="/Budget">Budget</a>
-  <h1>Details for User ID {{id}}</h1>
-  <h3>Average Rating: {{ratings.getAvgRating()}}</h3>
-  <h3>Average Difference vs Overall: {{ratings.getAvgDifference()}}</h3>
-  {{rating_counts|safe}}
+  <nav>
+    <a href="/AA_Winners">Academy Award Statistics</a>
+    <a href="/Ratings">Movie Ratings</a>
+    <a href="/Budget">Budget</a>
+  </nav>
+  <h1 class="page-title">Details for User ID {{id}}</h1>
+  <div class="sub-title">
+    <h3>Average Rating: {{ratings.getAvgRating()}}</h3>
+    <h3>Average Difference vs Overall: {{ratings.getAvgDifference()}}</h3>
+  </div>
+  <div class="graph">{{rating_counts|safe}}</div>
   <div class="user_ratings">
     <form method="POST">
-      <label for="sort_by">Sort By:</label>
-      <select name="sort_by">
-        <option value="UserRating" {% if sort == 'UserRating' %} selected {% endif %}>User's Rating</option>
-        <option value="AvgUserRating" {% if sort == 'AvgUserRating' %} selected {% endif %}>Average User Rating</option>
-        <option value="Difference" {% if sort == 'Difference' %} selected {% endif %}>Difference Between User and Average</option>
-      </select>
-      <input type="radio" name="ordering" value="desc" {% if order == 'desc' %} checked {% endif %} ></input><label for="ordering">Highest First</label>
-      <input type="radio" name="ordering" value="asc" {% if order == 'asc' %} checked {% endif %} ></input><label for="ordering">Lowest First</label>
+      <div class="form-option">
+        <label for="sort_by">Sort By:</label>
+        <select name="sort_by">
+          <option value="UserRating" {% if sort == 'UserRating' %} selected {% endif %}>User's Rating</option>
+          <option value="AvgUserRating" {% if sort == 'AvgUserRating' %} selected {% endif %}>Average User Rating</option>
+          <option value="Difference" {% if sort == 'Difference' %} selected {% endif %}>Difference Between User and Average</option>
+        </select>
+      </div>
+      <div class="form-option">
+        <input type="radio" name="ordering" value="desc" {% if order == 'desc' %} checked {% endif %} ></input><label for="ordering">Highest First</label>
+        <input type="radio" name="ordering" value="asc" {% if order == 'asc' %} checked {% endif %} ></input><label for="ordering">Lowest First</label>
+      </div>
       <input type="submit" value="Refresh">
     </form>
     <table border=1>
@@ -44,6 +53,6 @@
       </tr>
     {% endfor %}
     </table>
-    <p>(* indicates a low (&lt20) number of reviews in the database)</p>
+    <p class="table-note">(* indicates a low (&lt20) number of reviews in the database)</p>
   </div>
 </body>
