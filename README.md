@@ -16,11 +16,9 @@ Prior to running the main application, you will need to initialize the database.
 ##### Running the Flask Application
 Once the database is initialized, you can run the command "**python main.py**" from the command line, which will start a flask application on **localhost:5000**. The application can be closed by pressing Ctrl-C from the command line.
 
-##### Data Limitations
-In order to load data within a reasonable period of time, not all data is collected from the sources:
-  * The Movies Dataset uses the smaller "ratings_small.csv" file, which contains a subset of about 100,000 reviews rather than the full "ratings.csv" with around 26,000,000. (Adds about 2 minutes to load)
-  * The full "credits.csv" from Kaggle contains the full cast and crew for around 50,000 movies and is about 185mb. The standalone python file "createsmallcredits.py" selects a subset of around 200 films based on a SQL statement and outputs that subset to "small_credits.csv". (Adds about an hour to load)
-  * Pulling data on all 50,000 films from the Open Movie Database would take far too long, and as a free user we're limited to 1,000 API calls per day. Instead, review scores, ratings, and poster images are selected from the most highly rated films, most commonly rated films, and films which have won at least one Academy Award. *(see line 37 in load_OMDBAPI.py)* If the user accesses a page that does not have information from the OMDB API, an attempt is made to fetch that data. It will be added to the cache file and the database, but any data retrieved this way will not appear after a new database initialization.
+### User Guide:
+There are three links at the top of each page - "Academy Awards", "Movie Ratings", and "Budget". These each lead to a separate page with one or more graphs and tables. The information displayed in the graphs and tables can in some cases be modified with a small form. Once the form settings are changed, hit the "Refresh" button to load the new data.  
+Where either ratings or cast/crew data is available for a particular movie, buttons will appear at the bottom of the page to show/hide tables with that information. Tables will provide links to other pages where data is available: there are pages for individual Movies, Users, and Cast and Crew.
 
 ### Code Structure:
 Files prefixed with "init_" and "load_" are responsible for creating and loading data into the database.
@@ -39,6 +37,9 @@ Files prefixed with "init_" and "load_" are responsible for creating and loading
 
 *test_cases.py* is a series of unit-tests to test database initialization, data loading, and data processing.
 
-### User Guide:
-There are three links at the top of each page - "Academy Awards", "Movie Ratings", and "Budget". These each lead to a separate page with one or more graphs and tables. The information displayed in the graphs and tables can in some cases be modified with a small form. Once the form settings are changed, hit the "Refresh" button to load the new data.  
-Tables will provide links to other pages where data is available: there are pages for individual Movies, Users, and Cast and Crew.
+##### Data Limitations
+In order to load data within a reasonable period of time, not all data is collected from the sources:
+  * The Movies Dataset uses the smaller "ratings_small.csv" file, which contains a subset of about 100,000 reviews rather than the full "ratings.csv" with around 26,000,000. (using "ratings.csv" adds about 2 minutes to load)
+  * The full "credits.csv" from Kaggle contains the full cast and crew for around 50,000 movies and is about 185mb. The standalone python file "createsmallcredits.py" selects a subset of around 200 films based on a SQL statement and outputs that subset to "small_credits.csv". (using the full "credits.csv" adds about an hour to load)
+  * Pulling data on all 50,000 films from the Open Movie Database would take far too long, and as a free user we're limited to 1,000 API calls per day. Instead, review scores, ratings, and poster images are selected from the most highly rated films, most commonly rated films, and films which have won at least one Academy Award. *(see line 37 in load_OMDBAPI.py)* If the user accesses a page that does not have information from the OMDB API, an attempt is made to fetch that data. It will be added to the cache file and the database, but any data retrieved this way will not appear after a new database initialization.  
+  * There is some questionable data from "ratings_small.csv" regarding the timestamps field - for some more recent movies, timestamps provided in the data would indicate reviews several years prior to the release of the file.
