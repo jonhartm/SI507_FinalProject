@@ -3,12 +3,15 @@
 <head>
   <title>Jonathan Hartman - 507 Project - Movie Thing</title>
   <!-- https://stackoverflow.com/questions/14711552/external-javascript-file-is-not-getting-added-when-runs-on-flask -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
   <script type="text/javascript" src="{{ url_for('static', filename='plotly-latest.min.js') }}"></script>
 </head>
 <body>
-  <a href="/AA_Winners">Academy Award Statistics</a>
-  <a href="/Ratings">Movie Ratings</a>
-  <a href="/Budget">Budget</a>
+  <nav>
+    <a href="/AA_Winners" class="active">Academy Award Statistics</a>
+    <a href="/Ratings">Movie Ratings</a>
+    <a href="/Budget">Budget</a>
+  </nav>
   <h1>Academy Award Statistics</h1>
   <form method='post'>
     <label for="sort_by">Sort By:</label>

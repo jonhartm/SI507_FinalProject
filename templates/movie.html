@@ -3,13 +3,16 @@
 <head>
   <title>Jonathan Hartman - 507 Project - Movie Thing</title>
   <!-- https://stackoverflow.com/questions/14711552/external-javascript-file-is-not-getting-added-when-runs-on-flask -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}"></script>
   <script type="text/javascript" src="{{ url_for('static', filename='plotly-latest.min.js') }}"></script>
   <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 </head>
 <body>
-  <a href="/AA_Winners">Academy Award Statistics</a>
-  <a href="/Ratings">Movie Ratings</a>
-  <a href="/Budget">Budget</a>
+  <nav>
+    <a href="/AA_Winners">Academy Award Statistics</a>
+    <a href="/Ratings">Movie Ratings</a>
+    <a href="/Budget">Budget</a>
+  </nav>
   <h1>Details for {{details.title}} ({{details.release[:4]}})</h1>
   {% if details.poster %}<img src="{{details.poster}}">{% endif %}
   <h2>Rated {{details.rating}}</h2>
