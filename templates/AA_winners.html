@@ -12,20 +12,23 @@
     <a href="/Ratings">Movie Ratings</a>
     <a href="/Budget">Budget</a>
   </nav>
-  <h1>Academy Award Statistics</h1>
+  <h1 class="page-title">Academy Award Statistics</h1>
   <form method='post'>
-    <label for="sort_by">Sort By:</label>
-    <select name="sort_by">
-      <option value="wins" {% if sort == 'wins' %} selected {% endif %}>Total Wins</option>
-      <option value="noms" {% if sort == 'noms' %} selected {% endif %}>Nominations</option>
-    </select>
-
-    <label for="show_nom">Show Nominations</label>
-    <input type="checkbox" name="show_nom" {% if show_nom %} checked {% endif %}>
-
-    <label for="count">Records to Show</label>
-    <input type="number" name="count" value={{count}} step=10 min=10 max=590>
-
+    <div class="form-option">
+      <label for="sort_by">Sort By:</label>
+      <select name="sort_by">
+        <option value="wins" {% if sort == 'wins' %} selected {% endif %}>Total Wins</option>
+        <option value="noms" {% if sort == 'noms' %} selected {% endif %}>Nominations</option>
+      </select>
+    </div>
+    <div class="form-option">
+      <label for="show_nom">Show Nominations</label>
+      <input type="checkbox" name="show_nom" {% if show_nom %} checked {% endif %}>
+    </div>
+    <div class="form-option">
+      <label for="count">Records to Show</label>
+      <input type="number" name="count" value={{count}} step=10 min=10 max=590>
+    </div>
     <input type="submit" value="Refresh">
   </form>
   {{graph|safe}}

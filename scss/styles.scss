@@ -19,6 +19,7 @@ nav {
   a {
     background-color: $dark-background;
     border-radius: 5px;
+    box-shadow: 5px 5px 10px $shadow;
     color: $white;
     font-size: 18px;
     margin: 1%;
@@ -36,5 +37,35 @@ nav {
   .active {
     background-color: $secondary-background;
     color: $dark-accent;
+  }
+}
+
+.page-title {
+  border-bottom: $heavy-border;
+  border-top: $heavy-border;
+  margin: 1em auto;
+  text-align: center;
+}
+
+form {
+  align-items: center;
+  background-color: $secondary-background;
+  border-radius: 5px;
+  box-shadow: 5px 5px 10px $shadow;
+  display: flex;
+  flex-flow: column;
+  margin: 1% auto;
+  padding: 1%;
+  width: 33%;
+
+  div {
+    margin: .5em 0;
+  }
+
+  [type="submit"] {
+    font-size: 16px;
+    height: 2em;
+    margin-top: 1em;
+    width: 150px;
   }
 }

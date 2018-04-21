@@ -13,21 +13,26 @@
     <a href="/Ratings" class="active">Movie Ratings</a>
     <a href="/Budget">Budget</a>
   </nav>
-  <h1>Ratings</h1>
+  <h1 class="page-title">Ratings</h1>
   <form method="POST">
-    <label for="sort_by">Sort By</label>
-    <select name="sort_by" id="sort_by">
-      <option value="AvgCriticRating" {% if sort == 'AvgCriticRating' %} selected {% endif %} >AVG Critic Rating (IMDB/Rotten Tomatoes/Metacritic)</option>
-      <option value="AvgUserRating" {% if sort == 'AvgUserRating' %} selected {% endif %} >AVG User Rating (GroupLens)</option>
-      <option value="RatingDiff" {% if sort == 'RatingDiff' %} selected {% endif %} >Difference Between Critic and User ratings</option>
-    </select>
+    <div class="form-option">
+      <label for="sort_by">Sort By</label>
+      <select name="sort_by" id="sort_by">
+        <option value="AvgCriticRating" {% if sort == 'AvgCriticRating' %} selected {% endif %} >AVG Critic Rating (IMDB/Rotten Tomatoes/Metacritic)</option>
+        <option value="AvgUserRating" {% if sort == 'AvgUserRating' %} selected {% endif %} >AVG User Rating (GroupLens)</option>
+        <option value="RatingDiff" {% if sort == 'RatingDiff' %} selected {% endif %} >Difference Between Critic and User ratings</option>
+      </select>
+    </div>
 
-    <input type="radio" name="ordering" value="DESC" {% if order == 'DESC' %} checked {% endif %} ></input><label for="ordering" id="order_desc">(Loading...)</label>
-    <input type="radio" name="ordering" value="ASC" id="order_desc" {% if order == 'ASC' %} checked {% endif %} ><label for="ordering" id="order_asc">(Loading...)</label>
-    </input>
+    <div class="form-option">
+      <input type="radio" name="ordering" value="DESC" {% if order == 'DESC' %} checked {% endif %} ></input><label for="ordering" id="order_desc">(Loading...)</label></input>
+      <input type="radio" name="ordering" value="ASC" id="order_desc" {% if order == 'ASC' %} checked {% endif %} ><label for="ordering" id="order_asc">(Loading...)</label></input>
+    </div>
 
-    <label for="count">Records to Show</label>
-    <input type="number" name="count" value={{count}} step=10 min=0 max=160>
+    <div class="form-option">
+      <label for="count">Records to Show</label>
+      <input type="number" name="count" value={{count}} step=10 min=0 max=160>
+    </div>
 
     <input type="submit" value="Refresh">
   </form>

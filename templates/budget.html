@@ -13,16 +13,20 @@
     <a href="/Ratings">Movie Ratings</a>
     <a href="/Budget" class="active">Budget</a>
   </nav>
-  <h1>Budget</h1>
+  <h1 class="page-title">Budget</h1>
   <h2>Top Films By Budget/Revenue</h2>
   <form method="POST">
-    <label for="budget_sort">Sort By</label>
-    <select name="budget_sort">
-      <option value="Budget" {% if budget_sort == 'Budget' %} selected {% endif %} >Highest Budget</option>
-      <option value="Revenue" {% if budget_sort == 'Revenue' %} selected {% endif %} >Highest Revenue</option>
-    </select>
-    <label for="budget_limit">Records to Show</label>
-    <input type="number" name="budget_limit" value={{budget_limit}} step=10 min=0 max=160>
+    <div class="form-option">
+      <label for="budget_sort">Sort By</label>
+      <select name="budget_sort">
+        <option value="Budget" {% if budget_sort == 'Budget' %} selected {% endif %} >Highest Budget</option>
+        <option value="Revenue" {% if budget_sort == 'Revenue' %} selected {% endif %} >Highest Revenue</option>
+      </select>
+    </div>
+    <div class="form-option">
+      <label for="budget_limit">Records to Show</label>
+      <input type="number" name="budget_limit" value={{budget_limit}} step=10 min=0 max=160>
+    </div>
     <input type="submit" value="Refresh">
   </form>
   {{budget_graph|safe}}
