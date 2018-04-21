@@ -79,3 +79,34 @@ form {
   padding-bottom: 30px;
   width: 80%;
 }
+
+table {
+  margin: auto;
+
+  tr:nth-child(odd) {
+    background-color: $secondary-background;
+  }
+
+  tr:first-child {
+    background-color: $dark-accent;
+    color: $white;
+    font-size: 150%;
+    font-style: italic;
+  }
+
+  td {
+    padding: .25em 1em;
+    text-align: center;
+  }
+
+  a {
+    line-height: 100%;
+    padding: .25em;
+    width: 100%;
+  }
+
+  a:hover {
+    background-color: $dark-accent;
+    color: $white;
+  }
+}

@@ -62,4 +62,24 @@ form {
   padding-bottom: 30px;
   width: 80%; }
 
+table {
+  margin: auto; }
+  table tr:nth-child(odd) {
+    background-color: #c9c9c9; }
+  table tr:first-child {
+    background-color: #03396c;
+    color: #fff;
+    font-size: 150%;
+    font-style: italic; }
+  table td {
+    padding: .25em 1em;
+    text-align: center; }
+  table a {
+    line-height: 100%;
+    padding: .25em;
+    width: 100%; }
+  table a:hover {
+    background-color: #03396c;
+    color: #fff; }
+
 /*# sourceMappingURL=styles.css.map */
